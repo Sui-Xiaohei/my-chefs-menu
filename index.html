@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="My Chef’s Menu——为家庭用餐创造具有仪式感的菜单。"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>My Chef’s Menu</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="welcome-section">
+        <p class="eyebrow">Your table, your story</p>
+        <h1>My Chef’s Menu</h1>
+        <p class="welcome-message">
+          欢迎来到你的私人菜单工作室。接下来，我们会从这里一步步制作属于你的晚宴菜单。
+        </p>
+      </header>
+
+      <div class="workspace">
+        <section class="menu-form-panel" aria-labelledby="menu-form-title">
+          <div class="section-heading">
+            <p class="eyebrow">Create your menu</p>
+            <h2 id="menu-form-title">菜单信息</h2>
+            <p>先写下今晚的菜单内容，完成后再生成你的专属菜单。</p>
+          </div>
+
+          <form class="menu-form">
+            <div class="form-field">
+              <label for="menu-title">Menu Title</label>
+              <input
+                id="menu-title"
+                name="menuTitle"
+                type="text"
+                placeholder="例如：Saturday Dinner"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="starter">Starter</label>
+              <input
+                id="starter"
+                name="starter"
+                type="text"
+                placeholder="例如：Burrata Salad"
+              />
+            </div>
+
+            <div class="form-field description-field">
+              <label for="starter-description">Starter Description</label>
+              <textarea
+                id="starter-description"
+                class="description-input"
+                name="starterDescription"
+                rows="2"
+                placeholder="例如：Heirloom tomatoes, basil oil and aged balsamic"
+              ></textarea>
+            </div>
+
+            <div class="form-field">
+              <label for="main-course">Main Course</label>
+              <input
+                id="main-course"
+                name="mainCourse"
+                type="text"
+                placeholder="例如：Truffle Pasta"
+              />
+            </div>
+
+            <div class="form-field description-field">
+              <label for="main-course-description"
+                >Main Course Description</label
+              >
+              <textarea
+                id="main-course-description"
+                class="description-input"
+                name="mainCourseDescription"
+                rows="2"
+                placeholder="例如：Handmade pasta with black truffle cream"
+              ></textarea>
+            </div>
+
+            <div class="form-field">
+              <label for="dessert">Dessert</label>
+              <input
+                id="dessert"
+                name="dessert"
+                type="text"
+                placeholder="例如：Tiramisu"
+              />
+            </div>
+
+            <div class="form-field description-field">
+              <label for="dessert-description">Dessert Description</label>
+              <textarea
+                id="dessert-description"
+                class="description-input"
+                name="dessertDescription"
+                rows="2"
+                placeholder="例如：Mascarpone, espresso and cocoa"
+              ></textarea>
+            </div>
+
+            <div class="form-field">
+              <label for="drinks">Drinks</label>
+              <input
+                id="drinks"
+                name="drinks"
+                type="text"
+                placeholder="例如：Sparkling Wine"
+              />
+            </div>
+
+            <div class="form-field description-field">
+              <label for="drinks-description"
+                >Drinks Description（可选）</label
+              >
+              <textarea
+                id="drinks-description"
+                class="description-input"
+                name="drinksDescription"
+                rows="2"
+                placeholder="例如：Crisp, floral and lightly sparkling"
+              ></textarea>
+            </div>
+
+            <button id="generate-button" class="generate-button" type="button">
+              Generate
+            </button>
+            <p id="form-error" class="form-error" role="alert" hidden></p>
+          </form>
+        </section>
+
+        <div class="result-panel">
+          <section class="style-selector" aria-labelledby="style-selector-title">
+            <div>
+              <p class="eyebrow">Visual direction</p>
+              <h2 id="style-selector-title">Menu Style</h2>
+            </div>
+            <button
+              id="michelin-template-button"
+              class="style-option"
+              type="button"
+              aria-pressed="false"
+              disabled
+            >
+              Michelin Fine Dining
+            </button>
+          </section>
+
+          <section
+            id="menu-preview-card"
+            class="menu-placeholder"
+            aria-labelledby="menu-preview-title"
+          >
+            <div id="preview-empty" class="preview-empty">
+              <p class="menu-label">Tonight’s Menu</p>
+              <h2 id="menu-preview-title">菜单预览区域</h2>
+              <div class="divider" aria-hidden="true"></div>
+              <p>填写左侧内容，然后点击 Generate 生成菜单。</p>
+            </div>
+
+            <div id="preview-content" class="preview-content" hidden>
+              <p class="menu-label">Chef’s Selection</p>
+              <h2 id="preview-title"></h2>
+              <div class="divider" aria-hidden="true"></div>
+
+              <div class="menu-courses">
+                <div id="preview-starter-row" class="menu-course" hidden>
+                  <p class="course-label">Starter</p>
+                  <p id="preview-starter" class="course-name"></p>
+                  <p
+                    id="preview-starter-description"
+                    class="course-description"
+                  ></p>
+                </div>
+
+                <div id="preview-main-course-row" class="menu-course" hidden>
+                  <p class="course-label">Main Course</p>
+                  <p id="preview-main-course" class="course-name"></p>
+                  <p
+                    id="preview-main-course-description"
+                    class="course-description"
+                  ></p>
+                </div>
+
+                <div id="preview-dessert-row" class="menu-course" hidden>
+                  <p class="course-label">Dessert</p>
+                  <p id="preview-dessert" class="course-name"></p>
+                  <p
+                    id="preview-dessert-description"
+                    class="course-description"
+                  ></p>
+                </div>
+
+                <div id="preview-drinks-row" class="menu-course" hidden>
+                  <p class="course-label">Drinks</p>
+                  <p id="preview-drinks" class="course-name"></p>
+                  <p
+                    id="preview-drinks-description"
+                    class="course-description"
+                  ></p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div id="export-actions" class="export-actions">
+            <button
+              id="export-button"
+              class="export-button"
+              type="button"
+              disabled
+            >
+              Save Menu
+            </button>
+            <p id="export-status" class="export-status" role="status" hidden></p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div
+      id="mobile-export-preview"
+      class="mobile-export-preview"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mobile-export-title"
+      hidden
+    >
+      <div class="mobile-export-panel">
+        <div class="mobile-export-heading">
+          <div>
+            <p class="eyebrow">Your menu is ready</p>
+            <h2 id="mobile-export-title">长按图片保存或分享</h2>
+          </div>
+          <button
+            id="mobile-export-close"
+            class="mobile-export-close"
+            type="button"
+            aria-label="关闭菜单图片预览"
+          >
+            Close
+          </button>
+        </div>
+        <p class="mobile-export-instruction">
+          请长按下方菜单图片，然后选择“存储到照片”或“共享”。
+        </p>
+        <img
+          id="mobile-export-image"
+          class="mobile-export-image"
+          alt="生成后的完整菜单图片"
+        />
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
