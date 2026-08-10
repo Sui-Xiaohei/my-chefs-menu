@@ -128,3 +128,64 @@
 确认人：_____Sui___________
 
 确认日期：___2026-08-07_____________
+
+---
+
+# My Chef’s Menu v0.2.0 Final Release Checklist
+
+## 最终验收状态
+
+- 当前版本：v0.2.0
+- 当前阶段：Final Release Approval
+- 状态：最终验收通过，可以进入正式发布流程
+
+## 已完成功能
+
+- [x] Theme Picker
+- [x] Michelin Fine Dining Theme
+- [x] Modern European Theme
+- [x] Romantic Dinner Theme
+- [x] 三个 Theme 共用统一 Theme Registry 与切换机制
+- [x] Export PNG（1080 × 1350 px、4:5）
+- [x] Mobile Safari 图片预览、保存与分享流程
+- [x] Mobile Safari SVG resource loading fix
+- [x] 纯英文、纯中文及中英混合 Long Title Handling
+
+## iPhone Safari Export Compatibility
+
+- [x] Romantic signature decoration 已从 CSS pseudo-element 调整为真实 `img` DOM。
+- [x] Preview 与 Export clone 共用 `romantic-dinner-signature.svg`。
+- [x] 修复 iPhone Safari 导出 PNG 时 signature decoration 可能丢失的问题。
+- [x] Export 调用 `html-to-image` 前会遍历 clone 内的图片资源。
+- [x] 导出前等待图片完成加载，并在支持时执行 `image.decode()`。
+- [x] 图片具有有效 `naturalWidth` 后才进入 PNG 转换。
+
+### 问题记录
+
+Romantic signature decoration 在 iPhone Safari 导出时曾出现资源加载问题。问题发生于 DOM 和 SVG 资源存在、Preview 正常，但移动端 `html-to-image` 转换阶段未稳定等待图片资源完成加载。当前已通过 export 前 image resource readiness check 修复。
+
+## Desktop 三主题 PNG 最终测试
+
+- [x] Michelin Fine Dining Preview 与 PNG 导出测试通过。
+- [x] Modern European Preview、植物 SVG 与 PNG 导出测试通过。
+- [x] Romantic Dinner Preview、handwritten title、signature decoration 与 PNG 导出测试通过。
+- [x] 三个 Theme 导出尺寸均为 1080 × 1350 px、4:5。
+
+## Mobile Safari 实机最终测试
+
+- [x] Generate 正常。
+- [x] Theme switching 正常。
+- [x] Romantic signature PNG export 正常。
+- [x] Image preview 正常。
+- [x] Long press save 正常。
+- [x] Share Sheet 正常。
+
+## 最终发布结论
+
+My Chef’s Menu v0.2.0 已完成多 Theme 功能、Desktop PNG 与 Mobile Safari 实机最终验收。
+
+**Approved for Release**
+
+最终确认日期：2026-08-10
+
+说明：当前尚未标记为 `Released`。正式状态将在 release commit、push 与部署完成后更新。

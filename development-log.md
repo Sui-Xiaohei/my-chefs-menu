@@ -4,11 +4,173 @@
 
 ### 日期
 
-2026-08-07
+2026-08-10
 
 ### 当前版本
 
-My Chef’s Menu v0.1
+My Chef’s Menu v0.2.0
+Release Candidate
+
+## v0.2.0 Release Candidate
+
+### 当前状态
+
+My Chef’s Menu v0.2.0 已完成核心开发，当前进入 Release Candidate 阶段。
+
+### 已完成
+
+- Theme Picker；
+- Michelin Fine Dining Theme；
+- Modern European Theme；
+- Romantic Dinner Theme；
+- 三 Theme 共用统一 Theme Registry 与切换机制；
+- Export PNG（1080 × 1350 px、4:5）；
+- Mobile Safari 图片预览、保存与分享流程；
+- Mobile Safari SVG resource loading fix；
+- 纯英文、纯中文及中英混合 Long Title Handling。
+
+### Romantic Signature — iPhone Safari Export Fix
+
+Romantic signature decoration 在 iPhone Safari 导出 PNG 时曾出现资源加载问题：
+
+- Preview 中 signature 正常显示；
+- signature DOM 与 SVG 资源正常存在；
+- Mobile Safari 的 `html-to-image` 转换阶段未稳定等待图片资源完成加载；
+- 导出的 PNG 中可能缺少 signature decoration。
+
+修复内容：
+
+- signature decoration 已使用真实 `img` DOM；
+- Preview 与 Export clone 共用 `romantic-dinner-signature.svg`；
+- Export 前遍历 clone 内所有图片资源；
+- 等待图片 `complete` / `load`；
+- 浏览器支持时执行 `await image.decode()`；
+- 确认图片具有有效 `naturalWidth` 后再执行 PNG 转换。
+
+当前状态：已通过 export 前 image resource readiness check 修复。
+
+### Release Candidate 定位
+
+- 当前版本：v0.2.0；
+- 当前阶段：Release Candidate；
+- 当前重点：最终多 Theme PNG、Mobile Safari 与发布回归验证。
+
+## v0.2 Visual Identity Update #1 — Hero Section
+
+### 已完成
+
+- 首页品牌标题字体已从原方案调整为 Playfair Display；
+- 修复原字体导致 My Chef’s Menu 中 s 与 apostrophe（’）视觉粘连的问题；
+- Hero Section 文案优化完成；
+- 首页品牌语言与 Fine Dining 定位进一步统一；
+- 当前标题视觉方向确定为：
+  - Elegant
+  - Fine Dining
+  - Editorial Luxury
+
+### 设计决策
+
+- 保留 “YOUR TABLE, YOUR STORY” 作为品牌 tagline；
+- 保留英文品牌标题作为主要视觉元素；
+- Playfair Display 作为当前 Hero Title 推荐字体方案；
+- 当前首页视觉方向更接近高级餐厅菜单 / 生活方式品牌，而非普通工具页面。
+
+### 后续可优化
+
+- 中文引导文案需要进一步调整，使其与品牌调性一致；
+- 首页整体留白和标题比例可以在后续视觉优化阶段继续评估。
+
+### 当前版本保持
+
+My Chef’s Menu v0.2
+Phase 1 - Visual Identity Upgrade
+
+## v0.2 Phase 2 Preparation - Michelin Fine Dining Upgrade
+
+### 已完成
+
+- 完成 Michelin Fine Dining 当前结构分析；
+- 确认当前模板基于共享 DOM + theme class 的设计方式；
+- 确认未来多个 Atmosphere 应共享内容结构，通过视觉主题区分；
+- 确立 Michelin v2 视觉方向：
+
+Quiet Luxury / Contemporary Tasting Menu
+
+### 设计关键词
+
+- 深炭黑背景；
+- 温暖象牙白文字；
+- 低饱和香槟金；
+- Playfair Display 标题；
+- 克制留白；
+- 菜品层级优化。
+
+### 当前状态
+
+当前未修改代码。
+
+### 下一阶段
+
+Michelin Fine Dining v2 Design Specification
+
+需要先确定：
+
+- 色彩系统；
+- 字体层级；
+- Header 构图；
+- 菜品排版；
+- Export PNG 对应规则。
+
+## v0.2 Theme System Progress
+
+### 已完成
+
+1. Theme switching architecture
+2. Michelin Fine Dining Theme
+3. Modern European Theme
+
+### Modern European 当前状态
+
+- Color system finalized
+- Typography finalized
+- Libre Baskerville Dish Name implemented
+- Inner frame added
+- Decorative illustration system finalized
+- Export layout verified
+
+## Modern European Theme Completed
+
+### 状态
+
+Completed / Design Frozen
+
+### 已完成
+
+- Theme architecture integration
+- Theme switching compatibility
+- Contemporary European Editorial direction
+- Warm paper color system
+- Playfair Display Menu Title
+- Libre Baskerville Dish Name typography
+- Terracotta category accent
+- Olive branch and wheat decorative illustration system
+- Subtle inner frame
+- Editorial spacing refinement
+- Export Canvas styling verification
+
+### 确认
+
+Modern European Theme 不再进行结构性调整。
+
+后续仅允许：
+
+- bug fix
+- responsive adjustment
+- export compatibility fix
+
+### 下一阶段
+
+Romantic Dinner Theme Design & Development
 
 ## 当前项目状态总结
 
@@ -18,7 +180,7 @@ My Chef’s Menu v0.1
 
 ### 当前阶段
 
-Ready for Release
+Released
 
 ### 已完成
 
@@ -42,12 +204,20 @@ Ready for Release
 - 手机浏览器测试已完成。
 - Release Checklist 已全部完成。
 - 最终 Release Review 已通过。
+- GitHub repository 已建立。
+- 项目代码已完成首次版本提交。
+- Vercel deployment 已完成。
+- Production 环境可访问。
+- Desktop 浏览器线上测试通过。
+- Mobile Safari 线上测试通过。
+- Generate、Michelin、Save Menu 在线环境测试通过。
+- PNG 导出功能在线环境验证通过。
 
 ### 最终确认
 
 - 最终确认人：Sui。
 - 确认日期：2026-08-07。
-- 当前状态：Ready for Release。
+- 当前状态：Released。
 
 ### Console 检查结果
 
@@ -57,7 +227,8 @@ Ready for Release
 
 ### 下一步建议顺序
 
-1. 进入部署阶段。
+1. 进入 Phase 5 - User Testing / Feedback Collection。
+2. 持续观察 Production 环境运行情况并记录用户反馈。
 
 ### 已完成
 
@@ -84,9 +255,23 @@ Ready for Release
 
 ### 当前阶段
 
-Ready for Release
+Released
 
-v0.1 核心功能开发和 Release Testing 已经完成，当前已达到发布标准，可以进入部署阶段。
+v0.1 核心功能开发、Release Testing 和正式部署已经完成，Production 环境可正常访问。
+
+### v0.1 Release 记录
+
+- 项目状态：Released。
+- GitHub repository 已创建。
+- 项目代码已完成首次版本提交。
+- Vercel 部署完成。
+- Production 环境已上线。
+- Desktop 浏览器线上访问测试通过。
+- Mobile Safari 线上访问测试通过。
+- Generate、Michelin、Save Menu 在线环境测试通过。
+- PNG 导出功能在线环境验证通过。
+- Release Checklist 已完成。
+- v0.1 达到正式发布标准。
 
 ### Release Testing 当前状态
 
@@ -102,7 +287,7 @@ v0.1 核心功能开发和 Release Testing 已经完成，当前已达到发布�
 - 已确认普通浏览器中的异步响应错误来自浏览器扩展，不属于项目代码问题。
 - 已完成正式构建检查，`npm run build` 成功。
 - 已完成未使用代码、重复样式和失效选择器检查，未发现必须修复的问题。
-- 当前进入手机浏览器测试阶段。
+- 手机浏览器测试已完成。
 
 #### 已完成：手机浏览器测试
 
@@ -143,7 +328,7 @@ My Chef’s Menu v0.1 最终 Release Review 已通过：
 - 最终确认人：Sui。
 - 确认日期：2026-08-07。
 
-当前状态：Ready for Release。v0.1 已达到发布标准，可以进入部署阶段。
+当前状态：Released。My Chef’s Menu v0.1 已完成正式部署，Desktop、Mobile Safari 和 Save Menu 在线环境验证均已通过。
 
 ### 当前核心流程
 
@@ -168,8 +353,17 @@ My Chef’s Menu v0.1 最终 Release Review 已通过：
 
 ### 下一步
 
-1. 选择部署平台并完成 v0.1 部署。
-2. 部署后检查线上页面和 Desktop、Mobile Safari 核心流程。
+#### Phase 5 - User Testing / Feedback Collection
+
+下一阶段重点不是开发新功能，而是通过真实使用收集：
+
+- 用户操作体验问题。
+- UI/UX 优化建议。
+- 功能需求。
+- 导出体验反馈。
+- 移动端体验反馈。
+
+收集到的反馈将用于评估后续版本方向，不在本阶段直接扩展新功能。
 
 ## 历史记录
 

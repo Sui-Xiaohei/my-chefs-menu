@@ -9,14 +9,44 @@ const emptyPreview = document.querySelector("#preview-empty");
 const menuPreview = document.querySelector("#preview-content");
 const previewTitle = document.querySelector("#preview-title");
 const menuPreviewCard = document.querySelector("#menu-preview-card");
-const michelinTemplateButton = document.querySelector(
-  "#michelin-template-button",
-);
+const themePicker = document.querySelector("#theme-picker");
+const themePickerTrigger = document.querySelector("#theme-picker-trigger");
+const themePickerCurrent = document.querySelector("#theme-picker-current");
+const themePickerList = document.querySelector("#theme-picker-list");
+let themeButtons = [];
 const exportButton = document.querySelector("#export-button");
 const exportStatus = document.querySelector("#export-status");
 const mobileExportPreview = document.querySelector("#mobile-export-preview");
 const mobileExportImage = document.querySelector("#mobile-export-image");
 const mobileExportClose = document.querySelector("#mobile-export-close");
+
+const chineseCharacterPattern =
+  /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/u;
+const latinCharacterPattern = /[A-Za-z]/;
+
+const themes = {
+  michelin: {
+    label: "Michelin Fine Dining",
+    className: "theme-michelin",
+    menuLabel: "Chef’s Selection",
+  },
+  "modern-european": {
+    label: "Modern European",
+    className: "theme-modern-european",
+    menuLabel: "Chef’s Selection",
+  },
+  "romantic-dinner": {
+    label: "Romantic Dinner",
+    className: "theme-romantic-dinner",
+    menuLabel: "A Special Menu",
+  },
+};
+
+const DEFAULT_THEME_ID = "michelin";
+
+const themeClassNames = Object.values(themes).map(
+  (theme) => theme.className,
+);
 
 const inputFields = {
   title: document.querySelector("#menu-title"),
@@ -75,6 +105,74 @@ const dishValidationRules = [
     label: "Drinks",
   },
 ];
+
+function applyTitleLengthClass(title) {
+  const visualLength = Array.from(title).reduce((length, character) => {
+    if (chineseCharacterPattern.test(character)) {
+      return length + 2.5;
+    }
+
+    if (/\s/u.test(character)) {
+      return length + 0.35;
+    }
+
+    return length + 1;
+  }, 0);
+
+  if (visualLength > 52) {
+    previewTitle.classList.add("is-extra-long-title");
+  } else if (visualLength > 30) {
+    previewTitle.classList.add("is-long-title");
+  }
+}
+
+function formatPreviewTitle() {
+  if (previewTitle.querySelector(".title-primary")) {
+    return;
+  }
+
+  const title = previewTitle.textContent.trim();
+  const firstChineseCharacter = title.match(chineseCharacterPattern);
+
+  previewTitle.classList.remove("is-long-title", "is-extra-long-title");
+  previewTitle.removeAttribute("aria-label");
+  applyTitleLengthClass(title);
+
+  if (!firstChineseCharacter) {
+    return;
+  }
+
+  const splitIndex = firstChineseCharacter.index;
+  const englishTitle = title
+    .slice(0, splitIndex)
+    .trim()
+    .replace(/[|/·—–-]+$/u, "")
+    .trim();
+  const chineseSubtitle = title.slice(splitIndex).trim();
+
+  if (!latinCharacterPattern.test(englishTitle) || chineseSubtitle === "") {
+    return;
+  }
+
+  const primaryTitle = document.createElement("span");
+  const secondaryTitle = document.createElement("span");
+
+  primaryTitle.className = "title-primary";
+  primaryTitle.textContent = englishTitle;
+  secondaryTitle.className = "title-secondary";
+  secondaryTitle.lang = "zh-CN";
+  secondaryTitle.textContent = chineseSubtitle;
+
+  previewTitle.setAttribute("aria-label", title);
+  previewTitle.replaceChildren(primaryTitle, secondaryTitle);
+}
+
+const previewTitleObserver = new MutationObserver(formatPreviewTitle);
+
+previewTitleObserver.observe(previewTitle, {
+  childList: true,
+  subtree: true,
+});
 
 function readMenuForm() {
   return {
@@ -163,14 +261,132 @@ function generateMenuPreview() {
 
   emptyPreview.hidden = true;
   menuPreview.hidden = false;
-  michelinTemplateButton.disabled = false;
+  themeButtons.forEach((button) => {
+    button.disabled = false;
+  });
   exportButton.disabled = false;
 }
 
-function applyMichelinTemplate() {
-  menuPreviewCard.classList.add("template-michelin");
-  michelinTemplateButton.classList.add("is-selected");
-  michelinTemplateButton.setAttribute("aria-pressed", "true");
+function renderThemePickerOptions() {
+  const options = document.createDocumentFragment();
+
+  Object.entries(themes).forEach(([themeId, theme]) => {
+    const option = document.createElement("button");
+    const checkmark = document.createElement("span");
+    const label = document.createElement("span");
+
+    option.className = "theme-picker-option";
+    option.type = "button";
+    option.dataset.theme = themeId;
+    option.setAttribute("role", "option");
+    option.setAttribute("aria-selected", "false");
+    option.tabIndex = -1;
+    option.disabled = true;
+
+    checkmark.className = "theme-picker-check";
+    checkmark.setAttribute("aria-hidden", "true");
+    checkmark.textContent = "✓";
+
+    label.textContent = theme.label;
+    option.append(checkmark, label);
+    options.append(option);
+  });
+
+  themePickerList.replaceChildren(options);
+  themeButtons = themePickerList.querySelectorAll("[data-theme]");
+}
+
+function isThemePickerAvailable() {
+  return Array.from(themeButtons).some((button) => !button.disabled);
+}
+
+function syncThemePickerAvailability() {
+  themePickerTrigger.setAttribute(
+    "aria-disabled",
+    String(!isThemePickerAvailable()),
+  );
+}
+
+function updateThemePickerSelection(themeId) {
+  const theme = themes[themeId];
+
+  if (!theme) {
+    return;
+  }
+
+  themePickerCurrent.textContent = theme.label;
+
+  themeButtons.forEach((button) => {
+    const isSelected = button.dataset.theme === themeId;
+
+    button.classList.toggle("is-selected", isSelected);
+    button.setAttribute("aria-selected", String(isSelected));
+  });
+}
+
+function openThemePicker(focusLastOption = false) {
+  if (!isThemePickerAvailable()) {
+    return;
+  }
+
+  themePickerList.hidden = false;
+  themePickerTrigger.setAttribute("aria-expanded", "true");
+
+  const enabledOptions = Array.from(themeButtons).filter(
+    (button) => !button.disabled,
+  );
+  const selectedOption = enabledOptions.find(
+    (button) => button.getAttribute("aria-selected") === "true",
+  );
+  const optionToFocus = focusLastOption
+    ? enabledOptions.at(-1)
+    : selectedOption || enabledOptions[0];
+
+  optionToFocus?.focus();
+}
+
+function closeThemePicker(restoreFocus = false) {
+  themePickerList.hidden = true;
+  themePickerTrigger.setAttribute("aria-expanded", "false");
+
+  if (restoreFocus) {
+    themePickerTrigger.focus();
+  }
+}
+
+function toggleThemePicker() {
+  if (themePickerList.hidden) {
+    openThemePicker();
+  } else {
+    closeThemePicker();
+  }
+}
+
+function moveThemePickerFocus(direction) {
+  const enabledOptions = Array.from(themeButtons).filter(
+    (button) => !button.disabled,
+  );
+  const currentIndex = enabledOptions.indexOf(document.activeElement);
+  const nextIndex =
+    (currentIndex + direction + enabledOptions.length) % enabledOptions.length;
+
+  enabledOptions[nextIndex]?.focus();
+}
+
+function applyTheme(themeId) {
+  const theme = themes[themeId];
+
+  if (!theme) {
+    return;
+  }
+
+  menuPreviewCard.classList.remove(...themeClassNames);
+  menuPreviewCard.classList.add(theme.className);
+  menuPreviewCard.querySelectorAll(".menu-label").forEach((menuLabel) => {
+    menuLabel.textContent = theme.menuLabel;
+  });
+
+  updateThemePickerSelection(themeId);
 }
 
 function createExportFileName() {
@@ -198,6 +414,35 @@ function createExportCard() {
   document.body.append(exportStage);
 
   return { exportCard, exportStage };
+}
+
+async function waitForImageReady(image) {
+  if (!image.complete) {
+    await new Promise((resolve, reject) => {
+      image.addEventListener("load", resolve, { once: true });
+      image.addEventListener("error", reject, { once: true });
+    });
+  }
+
+  if (typeof image.decode === "function") {
+    try {
+      await image.decode();
+    } catch (error) {
+      if (!image.complete || image.naturalWidth === 0) {
+        throw error;
+      }
+    }
+  }
+
+  if (image.naturalWidth === 0) {
+    throw new Error("IMAGE_LOAD_FAILED");
+  }
+}
+
+async function waitForExportImages(exportCard) {
+  const images = Array.from(exportCard.querySelectorAll("img"));
+
+  await Promise.all(images.map(waitForImageReady));
 }
 
 function isMobileSafari() {
@@ -230,7 +475,10 @@ async function exportMenuAsPng() {
   const { exportCard, exportStage } = createExportCard();
 
   try {
-    await document.fonts.ready;
+    await Promise.all([
+      document.fonts.ready,
+      waitForExportImages(exportCard),
+    ]);
 
     if (exportCard.scrollHeight > EXPORT_HEIGHT) {
       throw new Error("MENU_CONTENT_TOO_LONG");
@@ -280,7 +528,59 @@ async function exportMenuAsPng() {
   }
 }
 
+renderThemePickerOptions();
+applyTheme(DEFAULT_THEME_ID);
+syncThemePickerAvailability();
+
+const themeAvailabilityObserver = new MutationObserver(
+  syncThemePickerAvailability,
+);
+
+themeButtons.forEach((button) => {
+  themeAvailabilityObserver.observe(button, {
+    attributes: true,
+    attributeFilter: ["disabled"],
+  });
+});
+
 generateButton.addEventListener("click", generateMenuPreview);
-michelinTemplateButton.addEventListener("click", applyMichelinTemplate);
+themeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    applyTheme(button.dataset.theme);
+    closeThemePicker(true);
+  });
+});
+themePickerTrigger.addEventListener("click", toggleThemePicker);
+themePickerTrigger.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    event.preventDefault();
+    openThemePicker(event.key === "ArrowUp");
+  }
+});
+themePickerList.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    event.preventDefault();
+    moveThemePickerFocus(event.key === "ArrowDown" ? 1 : -1);
+  } else if (event.key === "Home" || event.key === "End") {
+    event.preventDefault();
+    const enabledOptions = Array.from(themeButtons).filter(
+      (button) => !button.disabled,
+    );
+    const optionToFocus =
+      event.key === "Home" ? enabledOptions[0] : enabledOptions.at(-1);
+
+    optionToFocus?.focus();
+  } else if (event.key === "Escape") {
+    event.preventDefault();
+    closeThemePicker(true);
+  } else if (event.key === "Tab") {
+    closeThemePicker();
+  }
+});
+document.addEventListener("pointerdown", (event) => {
+  if (!themePicker.contains(event.target)) {
+    closeThemePicker();
+  }
+});
 exportButton.addEventListener("click", exportMenuAsPng);
 mobileExportClose.addEventListener("click", closeMobileExportPreview);

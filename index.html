@@ -17,7 +17,7 @@
         <p class="eyebrow">Your table, your story</p>
         <h1>My Chef’s Menu</h1>
         <p class="welcome-message">
-          欢迎来到你的私人菜单工作室。接下来，我们会从这里一步步制作属于你的晚宴菜单。
+          为每一次相聚，创造一份独属于你的菜单。
         </p>
       </header>
 
@@ -26,12 +26,15 @@
           <div class="section-heading">
             <p class="eyebrow">Create your menu</p>
             <h2 id="menu-form-title">菜单信息</h2>
-            <p>先写下今晚的菜单内容，完成后再生成你的专属菜单。</p>
+            <p>先写下你的菜单内容，完成后再生成你的专属菜单。</p>
           </div>
 
           <form class="menu-form">
             <div class="form-field">
-              <label for="menu-title">Menu Title</label>
+              <label for="menu-title">
+                <span class="label-primary">Menu Title</span>
+                <span class="label-secondary">菜单标题</span>
+              </label>
               <input
                 id="menu-title"
                 name="menuTitle"
@@ -41,7 +44,10 @@
             </div>
 
             <div class="form-field">
-              <label for="starter">Starter</label>
+              <label for="starter">
+                <span class="label-primary">Starter</span>
+                <span class="label-secondary">前菜</span>
+              </label>
               <input
                 id="starter"
                 name="starter"
@@ -62,7 +68,10 @@
             </div>
 
             <div class="form-field">
-              <label for="main-course">Main Course</label>
+              <label for="main-course">
+                <span class="label-primary">Main Course</span>
+                <span class="label-secondary">主菜</span>
+              </label>
               <input
                 id="main-course"
                 name="mainCourse"
@@ -85,7 +94,10 @@
             </div>
 
             <div class="form-field">
-              <label for="dessert">Dessert</label>
+              <label for="dessert">
+                <span class="label-primary">Dessert</span>
+                <span class="label-secondary">甜点</span>
+              </label>
               <input
                 id="dessert"
                 name="dessert"
@@ -106,7 +118,10 @@
             </div>
 
             <div class="form-field">
-              <label for="drinks">Drinks</label>
+              <label for="drinks">
+                <span class="label-primary">Drinks</span>
+                <span class="label-secondary">饮品</span>
+              </label>
               <input
                 id="drinks"
                 name="drinks"
@@ -139,17 +154,30 @@
           <section class="style-selector" aria-labelledby="style-selector-title">
             <div>
               <p class="eyebrow">Visual direction</p>
-              <h2 id="style-selector-title">Menu Style</h2>
+              <h2 id="style-selector-title">Choose Your Atmosphere</h2>
+              <p class="atmosphere-helper">选择适合这份菜单的用餐氛围</p>
             </div>
-            <button
-              id="michelin-template-button"
-              class="style-option"
-              type="button"
-              aria-pressed="false"
-              disabled
-            >
-              Michelin Fine Dining
-            </button>
+            <div id="theme-picker" class="theme-picker">
+              <button
+                id="theme-picker-trigger"
+                class="theme-picker-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-controls="theme-picker-list"
+                aria-disabled="true"
+              >
+                <span id="theme-picker-current">Michelin Fine Dining</span>
+                <span class="theme-picker-chevron" aria-hidden="true"></span>
+              </button>
+              <div
+                id="theme-picker-list"
+                class="theme-picker-list"
+                role="listbox"
+                aria-label="Choose Your Atmosphere"
+                hidden
+              ></div>
+            </div>
           </section>
 
           <section
@@ -160,14 +188,28 @@
             <div id="preview-empty" class="preview-empty">
               <p class="menu-label">Tonight’s Menu</p>
               <h2 id="menu-preview-title">菜单预览区域</h2>
-              <div class="divider" aria-hidden="true"></div>
+              <div class="divider" aria-hidden="true">
+                <img
+                  class="romantic-signature"
+                  src="/romantic-dinner-signature.svg"
+                  alt=""
+                  draggable="false"
+                />
+              </div>
               <p>填写左侧内容，然后点击 Generate 生成菜单。</p>
             </div>
 
             <div id="preview-content" class="preview-content" hidden>
               <p class="menu-label">Chef’s Selection</p>
               <h2 id="preview-title"></h2>
-              <div class="divider" aria-hidden="true"></div>
+              <div class="divider" aria-hidden="true">
+                <img
+                  class="romantic-signature"
+                  src="/romantic-dinner-signature.svg"
+                  alt=""
+                  draggable="false"
+                />
+              </div>
 
               <div class="menu-courses">
                 <div id="preview-starter-row" class="menu-course" hidden>
