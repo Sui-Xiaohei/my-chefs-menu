@@ -4,12 +4,518 @@
 
 ### 日期
 
-2026-08-10
+2026-08-11
 
 ### 当前版本
 
-My Chef’s Menu v0.2.0
-Release Candidate
+My Chef’s Menu v0.3
+Development in Progress
+
+## v0.3 Multi Dish Support
+
+### 当前状态
+
+Development in Progress
+
+### Phase 1 — Dynamic Input Structure
+
+Status: Completed
+
+已完成：
+
+- 四个固定 Course 保持不变：
+  - Starter
+  - Main Course
+  - Dessert
+  - Drinks
+- 每个 Course 支持动态添加多个 Dish。
+- 实现 Add another dish。
+- 实现 Remove Dish。
+- 每个 Dish 包含：
+  - Dish Name
+  - Description
+- 动态 Dish 使用唯一 DOM ID。
+- Label 保留无障碍关联，但视觉上隐藏。
+- Dish Editor UI 已进行 refinement：
+  - 移除明显卡片边框；
+  - 移除 Dish 之间的表单式 divider；
+  - 使用 typography 与 whitespace 建立层级；
+  - Remove Dish 降低视觉权重。
+- 四个 Course 的 Dish 输入互相独立。
+
+### Phase 2 — Data Model and Validation
+
+Status: Completed
+
+新增：
+
+`src/menu-model.js`
+
+数据模型从 v0.2 的单 Dish 扁平结构升级为：
+
+```js
+{
+  title,
+  courses: [
+    {
+      id,
+      label,
+      labelZh,
+      dishes: [
+        {
+          name,
+          description
+        }
+      ]
+    }
+  ]
+}
+```
+
+已完成：
+
+- 使用统一 `courseDefinitions` 管理四个 Course。
+- `readMenuForm()` 支持读取多个 Dish。
+- Dish 顺序与 DOM 输入顺序一致。
+- 空白 Dish 可被识别并忽略。
+- Description-only Dish 会触发 Validation。
+- Validation Error 可以定位具体 Course 和 Dish，例如：`Starter — Dish 2`。
+- 多个 Validation Error 一次性显示。
+- 整个菜单至少需要一个有效 Dish Name。
+- 只填写 Menu Title 仍然不能 Generate。
+- Validation 失败时不会更新 Preview。
+
+### Phase 3 — Multi Dish Preview Renderer
+
+Status: Completed
+
+Preview DOM 已升级为：
+
+```text
+Course
+→ course-dishes
+→ course-dish
+→ course-name
+→ course-description
+```
+
+已完成：
+
+- 同一个 Course 可以渲染多个 Dish。
+- Dish 按用户输入顺序显示。
+- 空白 Dish 不进入 Preview。
+- Description-only Dish 不进入 Preview。
+- 没有有效 Dish 的 Course 自动隐藏。
+- 保留原有：
+  - `.course-name`
+  - `.course-description`
+  - `.menu-course`
+- 新增：
+  - `.course-dishes`
+  - `.course-dish`
+- Export clone 会自动继承全部 Multi Dish DOM。
+- Theme Registry、Theme Picker、Export 架构和 Mobile Safari 流程未修改。
+
+当前 Multi Dish spacing：
+
+- Michelin Fine Dining：Screen 20px / Export 28px
+- Modern European：Screen 22px / Export 30px
+- Romantic Dinner：Screen 20px / Export 28px
+
+### Phase 4 — Multi Dish Visual QA & Export Capacity Assessment
+
+Status: Completed
+
+本阶段完成只读评估，没有修改代码。
+
+#### Visual QA
+
+三个 Theme 的 Multi Dish 视觉结构均通过当前评估：
+
+Michelin Fine Dining：
+
+- 单 Dish 保持接近 v0.2。
+- Multi Dish 层级清晰。
+- 主要风险为纵向容量。
+
+Modern European：
+
+- Multi Dish 可读性最稳定。
+- 左对齐 Editorial layout 适合连续多个 Dish。
+- 当前 Dish spacing 合理。
+
+Romantic Dinner：
+
+- Multi Dish 仍保持 Dish Name / Description 层级。
+- 当前没有需要立即修改的布局问题。
+- Dish 数量增加会减少卡片留白，但暂未达到需要重新设计的程度。
+
+#### Spacing Assessment
+
+- 当前 Dish gap 保持不变。
+- Course gap 均明显大于 Dish gap。
+- 当前没有必要调整 Theme spacing。
+
+#### Export Capacity
+
+Export 继续保持 1080 × 1350 px。
+
+现有高度保护继续使用：
+
+```text
+exportCard.scrollHeight > 1350
+→ MENU_CONTENT_TOO_LONG
+```
+
+当前不设置固定 Dish hard limit。
+
+根据现有布局得到的保守容量估计：
+
+- 无 Description：约 8–10 Dish。
+- 短 Description：
+  - Michelin 约 4–6 Dish；
+  - Modern European 约 6 Dish；
+  - Romantic Dinner 约 4–6 Dish。
+- 较长 Description：
+  - Michelin 约 4 Dish；
+  - Modern European 约 4–6 Dish；
+  - Romantic Dinner 约 4 Dish。
+
+注意：以上容量为基于当前 typography、spacing、padding 和 layout 的估算，不是正式浏览器像素级测试结果。
+
+#### Product Decision
+
+当前决定：
+
+- 不设置统一 Dish hard limit。
+- 保留 Export 高度检测作为最终保护。
+- 暂不限制 Add another dish。
+- 后续可考虑增加非阻断容量提示：“For the best export result, keep your menu concise.”
+- 是否增加软提示，应在真实 PNG 容量测试后决定。
+
+#### Real-browser Capacity Test Preparation
+
+计划测试三个 Theme 的真实浏览器 PNG Capacity Matrix：
+
+- 4 Dish
+- 6 Dish
+- 8 Dish
+- 10 Dish
+
+需要重点测试：
+
+- 无 Description
+- 短 Description
+- 长 Description
+- Long Title
+- 中英混合标题
+- `MENU_CONTENT_TOO_LONG` 触发边界
+
+该测试已在下方“v0.3 Multi Dish Support - Phase 4 Real Browser Capacity Test Results”中完成并记录。
+
+### v0.3 Multi Dish Support - Phase 4 Real Browser Capacity Test Results
+
+Status: Completed
+
+#### 测试方法
+
+- 使用真实 Chrome 151 浏览器和项目现有 DOM、Theme 与 `html-to-image` 导出流程。
+- PNG 保持 1080 × 1350 px、4:5。
+- 测试三个 Theme：
+  - Michelin Fine Dining
+  - Modern European
+  - Romantic Dinner
+- 每个 Theme 分别测试 4、6、8、10 Dish。
+- 每种 Dish 数量覆盖：
+  - Short Description
+  - Long Description
+  - Long Dish Title
+  - Mixed Chinese-English Content
+- Dish 尽量均衡分配到 Starter、Main Course、Dessert 与 Drinks。
+- 共完成 48 个真实浏览器组合；19 个组合成功生成 PNG。
+- 同时评估 `MENU_CONTENT_TOO_LONG` 技术边界与成功导出后的实际设计质量。成功导出不自动等于产品上推荐。
+
+#### 三个 Theme 评估结果
+
+Michelin Fine Dining：
+
+- 4 Dish 在四类内容场景下均可导出，并保持高级餐厅菜单感。
+- 6 Dish 的短描述与紧凑中英混合内容可接受；长描述和长 Dish Title 超出导出高度。
+- 8 Dish 与 10 Dish 即使使用短描述也超出容量。
+- 推荐最大容量：6 Dish；长内容场景以 4 Dish 为安全目标。
+
+Modern European：
+
+- 4 Dish 在四类内容场景下均可导出，并保持稳定的 Editorial 层级。
+- 6 Dish 的短描述与紧凑中英混合内容可接受；长描述和长 Dish Title 超出导出高度。
+- 8 Dish 短内容虽然可以技术性导出，但底部仅剩约 43px，植物装饰进入内容安全区，Editorial 留白明显退化。
+- 10 Dish 全部超过容量。
+- 推荐最大容量：6 Dish；8 Dish 不作为产品支持上限。
+
+Romantic Dinner：
+
+- 4 Dish 最能保持浪漫感、签名装饰和留白。
+- 4 Dish 长描述可以导出，但 Description 已明显抢占视觉焦点；4 Dish 长标题已超过容量。
+- 6 Dish 仅适合短描述或紧凑中英混合内容，属于可接受上边界。
+- 8 Dish 与 10 Dish 全部超过容量。
+- 推荐最大容量：6 个紧凑 Dish；理想视觉容量为 4 Dish。
+
+#### 最终产品决策
+
+- Maximum supported dishes per menu：6 Dish。
+- Recommended category limit：每个 Category 最多 2 Dish。
+- Ideal visual capacity：4 Dish。
+- Long Description 或 Long Dish Title 场景应优先控制在 4 Dish。
+- 保留 `MENU_CONTENT_TOO_LONG` 作为最终 Export 高度保护。
+- 后续应提供 Description 与 Dish Title 的非阻断长度指导。
+- 不通过缩小 typography、压缩 spacing、减少 Theme whitespace 或移除装饰身份来容纳 8–10 Dish。
+- 不允许三个 Theme 因容量扩张退化为普通列表。
+
+#### Next Step
+
+- 执行 Multi Dish Desktop regression。
+- 执行 Multi Dish Mobile Safari regression。
+- 根据容量决策评估非阻断 Dish 数量与文字长度提示。
+- 完成 v0.3 release documentation、version metadata update 与 final release testing。
+
+### Phase 5.2 — Capacity Feedback
+
+Status: Completed
+
+#### 产品规则
+
+- 每份菜单最大支持 6 个有效 Dish，作为 hard limit。
+- 每个 Category 推荐最多 2 Dish，作为 soft recommendation，不阻止 Generate。
+- 4 Dish 为 ideal visual capacity，仅提供提示，不限制用户继续编辑。
+
+#### 技术实现
+
+- 基于已填写的 Dish Name 计算有效 Dish 数量。
+- 当有效 Dish 达到 6 个时：
+  - 禁用所有 Add another dish 按钮；
+  - 显示明确的容量上限提示；
+  - Add handler 同时保留上限保护。
+- 当单个 Category 达到 2 个有效 Dish 时显示轻量提示：
+  - `For best menu balance, keep each category within 2 dishes.`
+- 达到 4 Dish 时显示 ideal capacity 提示。
+- 删除 Dish 或清空 Dish Name 后重新计算状态，并恢复 Add 按钮。
+- 未修改 `courses[].dishes[]`、Renderer、Theme 或 Export 架构。
+
+#### 测试结果
+
+- 单 Category 2 Dish：软提示正常，不阻止继续添加。
+- 4 Dish：ideal capacity 提示正常。
+- 6 Dish：所有 Add 按钮正确禁用。
+- 尝试添加第 7 Dish：未创建新的输入行。
+- 删除 Dish 后：Add 按钮恢复，可重新添加。
+- Production build 通过。
+
+### Phase 5.3 — Validation & Content Guidance
+
+Status: Completed
+
+#### 产品规则
+
+- Generate 最多接受 6 个有效 Dish。
+- Dish Title 建议长度：约 60 个英文字符或 24 个中文字符。
+- Description 建议长度：约 100 个英文字符或 45 个中文字符。
+- 内容长度提示为非阻断提示；不截断文字，不阻止 Generate。
+
+#### 技术实现
+
+- 在 `menu-model.js` 中统一维护容量与文字长度常量。
+- 新增有效 Dish 总数统计与内容长度 warning 生成逻辑。
+- Generate 时汇总以下 blocking validation：
+  - Empty Menu
+  - Description-only Dish
+  - 超过 6 个有效 Dish
+- 多个 Validation Error 使用同一反馈区域一次性显示。
+- 内容长度 warning 使用独立的非阻断反馈区域，并定位到具体 Category 与 Dish。
+- Validation failure 不更新 Preview，也不会清空用户输入。
+- 未修改 Renderer、Theme、Export 或 Mobile flow。
+
+#### 测试结果
+
+- 7 个有效 Dish：Generate 被阻止。
+- 7 Dish 与 Description-only 同时出现：多个错误同时显示。
+- Validation failure 后 Preview 保持不变，输入完整保留。
+- 英文 Dish Title：60 字符无提示，61 字符显示提示。
+- 中文 Dish Title：24 字符无提示，25 字符显示提示。
+- 英文 Description：100 字符无提示，101 字符显示提示。
+- 中文 Description：45 字符无提示，46 字符显示提示。
+- 超长内容不截断并可正常 Generate。
+- Production build 通过。
+
+### Phase 5.4 — Regression Testing
+
+Status: Desktop Completed / Mobile Safari System Actions Pending
+
+#### 测试范围
+
+- Dish 数量：0、1、4、6、7 Dish。
+- Category：单 Category 2 Dish、单 Category 3 Dish、多 Category 混合 Dish。
+- Content：短内容、长 Dish Title、长 Description、中文与中英混合内容。
+- Theme：Michelin Fine Dining、Modern European、Romantic Dinner 的 4 Dish 与 6 Dish。
+- Desktop：Generate、Theme switching、Save Menu 与实际 PNG 下载。
+- Mobile Safari 分支：Generate、Save Menu、图片预览、Romantic signature 与关闭 Preview。
+- Failure recovery：Validation failure、Export failure、修改内容后重新 Generate 与重新 Save。
+
+#### 测试结果
+
+- 数量、Category、内容、Validation 与失败恢复测试均通过。
+- 三个 Theme 的 4 Dish 均通过。
+- 三个 Theme 的 6 Dish 均可成功生成 Preview 和 PNG。
+- Desktop 共验证 6 张真实 PNG，尺寸均为 1080 × 1350 px。
+- Mobile Safari 浏览器分支成功生成 1080 × 1350 px 图片预览，Romantic signature 正常。
+- Export failure 后临时 clone 正确清理，Save Menu 恢复可用；精简内容后可重新导出。
+- iPhone 系统级 Long Press Save 与 Share Sheet 仍需实机最终确认。
+
+#### 发现问题
+
+- Modern European 在 6 Dish、两行 Menu Title 场景下，左下植物装饰与 Dessert / Drinks 内容区域发生视觉重叠。
+- 该问题不影响 PNG 文件生成，但破坏 Editorial safe area，留作 Phase 5.5 处理。
+
+### Phase 5.5 — Visual Polish
+
+Status: Completed
+
+#### 调整原则
+
+- 仅调整 spacing 与 Modern European 装饰 safe area。
+- 不缩小字体，不压缩主题核心留白。
+- 不修改数据结构、Validation、Renderer、Export、Mobile flow、Canvas size 或 Theme architecture。
+
+#### 技术实现
+
+Michelin Fine Dining：
+
+- Screen：Dish gap 20px → 18px；Description gap 6px → 5px。
+- Export：Dish gap 28px → 25px；Description gap 9px → 7px；Category gap 52px → 50px。
+
+Modern European：
+
+- Screen：Dish gap 22px → 19px；Description gap 5px → 4px；Category gap 38px → 36px。
+- Export：Dish gap 30px → 24px；Description gap 8px → 6px；Category gap 50px → 48px。
+- 左下 wheat 装饰向左、向下移动并缩小，建立内容 safe area。
+- 右上 olive 装饰保持不变。
+
+Romantic Dinner：
+
+- Screen：Dish gap 20px → 18px。
+- Export：Dish gap 28px → 25px；Description gap 8px → 6px。
+- Category gap 保持 50px。
+
+#### 测试结果
+
+- 三个 Theme 的 4 Dish 与 6 Dish PNG 均成功导出。
+- Modern European 6 Dish + 两行 Menu Title 专项测试通过。
+- 共验证 7 张真实 PNG，尺寸均为 1080 × 1350 px。
+- 无文字截断或重叠。
+- 三个 Theme 的 Category 层级与原有设计语言保持。
+- 4 Dish 没有因间距调整变得过密。
+- Production build 通过。
+
+#### 已解决问题
+
+- Modern European 左下植物装饰不再进入 Dessert / Drinks 正文区域。
+- 6 Dish 的 Dish Name、Description 与 Category spacing 已重新平衡。
+- 在不缩小字体或破坏主题留白的前提下，降低了多 Dish 菜单的无效纵向延伸。
+
+## v0.3.0 Release Candidate
+
+### 当前状态
+
+**Release Candidate**
+
+My Chef’s Menu v0.3.0 已完成 Multi Dish Support 核心开发、容量规则、Validation、视觉优化、Desktop Export 回归与 iPhone Safari 实机测试，当前进入 Release Candidate 阶段。
+
+### Multi Dish Support
+
+- Starter、Main Course、Dessert 与 Drinks 均支持多个 Dish。
+- 支持动态 Add another dish 与 Remove Dish。
+- 数据结构统一为 `courses[].dishes[]`。
+- Preview、Theme switching 与 Export clone 均支持 Multi Dish DOM。
+
+### Capacity Rules
+
+- 每份菜单最大支持 6 个有效 Dish。
+- 每个 Category 推荐最多 2 Dish，使用非阻断 soft recommendation。
+- 4 Dish 为 ideal visual capacity。
+- Long Dish Title 或 Long Description 场景优先建议 4 Dish。
+- 保留 `MENU_CONTENT_TOO_LONG` 作为最终 Export 高度保护。
+
+### Validation
+
+- Empty Menu、Description-only Dish 与超过 6 Dish 均会阻止 Generate。
+- 多个 Validation Error 一次性汇总显示。
+- Validation failure 不更新 Preview，也不清空输入。
+- Dish Title 与 Description 长度使用非阻断 guidance，不截断用户内容。
+
+### Three Themes
+
+- Michelin Fine Dining：Multi Dish 层级与 fine-dining 气质保持。
+- Modern European：Editorial layout、植物装饰与内容 safe area 已完成回归。
+- Romantic Dinner：Multi Dish typography、signature decoration 与浪漫留白保持。
+
+### Visual Polish
+
+- 三个 Theme 的 Dish gap、Description gap 与 Category gap 已完成小幅重新平衡。
+- 未缩小字体，未改变 Canvas size 或 Theme architecture。
+- Modern European 左下 wheat 装饰已调整 position 与 size，不再进入 Dessert / Drinks 正文区域。
+
+### Desktop Export
+
+- 三个 Theme 的 4 Dish 与 6 Dish PNG 均已通过真实浏览器导出测试。
+- Modern European 6 Dish + 两行 Menu Title 专项测试通过。
+- PNG 尺寸保持 1080 × 1350 px、4:5。
+- Validation recovery 与 Export failure retry 流程通过。
+
+### iPhone Safari 实机测试
+
+- Multi Dish Generate：Pass。
+- Theme switching：Pass。
+- Save Menu 与图片预览：Pass。
+- Long Press Save：Pass。
+- Share Sheet：Pass。
+- Romantic signature 与 Multi Dish PNG：Pass。
+
+### Release Candidate 结论
+
+- Multi Dish Support：Completed。
+- Capacity Rules：Completed。
+- Validation & Content Guidance：Completed。
+- Three Themes Visual QA：Completed。
+- Desktop PNG Export：Completed。
+- iPhone Safari Save / Share Flow：Completed。
+- Version metadata：已同步为 v0.3.0。
+
+当前版本定位：**v0.3.0 Release Candidate**。
+
+### Current v0.3 Status
+
+Completed：
+
+- Phase 1 — Dynamic Input Structure
+- Phase 2 — Data Model and Validation
+- Phase 3 — Multi Dish Preview Renderer
+- Phase 4 — Multi Dish Visual QA assessment
+- Phase 4 — Real-browser PNG capacity matrix
+- Phase 5.2 — Capacity Feedback
+- Phase 5.3 — Validation & Content Guidance
+- Phase 5.4 — Desktop Regression Testing
+- Phase 5.5 — Visual Polish
+- iPhone Safari real-device Multi Dish regression
+- v0.3.0 version metadata update
+- v0.3 Release Candidate documentation
+
+Pending：
+
+- v0.3 final release testing
+- Production Console recheck
+
+Next Step：
+
+Complete the Production Console recheck and v0.3 final release validation before marking v0.3.0 as Released.
 
 ## v0.2.0 Release Candidate
 
@@ -377,3 +883,37 @@ My Chef’s Menu v0.1 最终 Release Review 已通过：
 - 创建 `technical-design.md`。
 - 创建 `project-context.md`。
 - 完成 Phase 2 - Technical Design。
+
+## v0.3 Release Final Polish / Release Ready
+
+### Font Localization Lite Migration
+
+- Font Localization Lite Migration 已完成。
+- Google Fonts runtime dependency 已移除；运行时不再请求 Google Fonts 或 `fonts.gstatic.com`。
+- Playfair Display、Libre Baskerville、Cormorant Garamond 与 Parisienne 已作为本地 WOFF2 英文字体资源接入。
+- 保持既有 Theme 字体映射、字号、行高、间距、Renderer 与 PNG Export 逻辑不变。
+- 中文字体不打包本地文件，继续使用各 Theme 定义的系统字体 fallback 顺序。
+
+### Validation Results
+
+- Production build：Pass。
+- Chrome Production Preview font loading 与 Console 检查：Pass。
+- Desktop font regression：Pass；三个 Theme 的 4 Dish / 6 Dish 英文、中文及中英混合场景未发现字体加载、换行、容量或 PNG 回归。
+- PNG Export：Pass；输出保持 1080 × 1350 px，无文字截断或 Theme 装饰重叠。
+- iPhone Safari smoke test：Pass；首次打开、Generate、Save Menu 与 PNG Preview 流程正常。
+
+### Final Copy Polish
+
+- Theme naming 已更新：
+  - Michelin Fine Dining → Classic Fine Dining；
+  - Modern European → Modern；
+  - Romantic Dinner 保持不变。
+- Modern Theme 顶部文案：Chef’s Selection → Seasonal Menu。
+- Chef’s Selection 继续作为 Classic Fine Dining 的顶部文案保留。
+- Phase 4 与此前版本中的旧 Theme 名称作为历史记录保留，未重写历史评估。
+
+### Current Status
+
+My Chef’s Menu v0.3.0 已完成 Multi Dish Support、容量规则、Validation、三 Theme、PNG Export、字体本地化与最终文案收尾。
+
+**Release Ready**

@@ -14,8 +14,8 @@ My Chef’s Menu is a browser-based menu creator for designing and exporting per
 
 ## Themes
 
-- **Michelin Fine Dining** — formal, centered fine-dining menu
-- **Modern European** — contemporary editorial restaurant menu
+- **Classic Fine Dining** — formal, centered fine-dining menu
+- **Modern** — contemporary editorial restaurant menu
 - **Romantic Dinner** — warm personal dinner card
 
 ## PNG Export

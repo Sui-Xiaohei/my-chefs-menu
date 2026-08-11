@@ -1,7 +1,18 @@
 import { toPng } from "html-to-image";
+import {
+  courseDefinitions,
+  getContentLengthWarnings,
+  getTotalValidDishCount,
+  getValidDishes,
+  hasValidDish,
+  MAX_DISHES_PER_MENU,
+  validateDishDescriptions,
+} from "./menu-model.js";
 
 const EXPORT_WIDTH = 1080;
 const EXPORT_HEIGHT = 1350;
+const IDEAL_DISHES_PER_MENU = 4;
+const RECOMMENDED_DISHES_PER_CATEGORY = 2;
 
 const generateButton = document.querySelector("#generate-button");
 const formError = document.querySelector("#form-error");
@@ -26,14 +37,14 @@ const latinCharacterPattern = /[A-Za-z]/;
 
 const themes = {
   michelin: {
-    label: "Michelin Fine Dining",
+    label: "Classic Fine Dining",
     className: "theme-michelin",
     menuLabel: "Chef’s Selection",
   },
   "modern-european": {
-    label: "Modern European",
+    label: "Modern",
     className: "theme-modern-european",
-    menuLabel: "Chef’s Selection",
+    menuLabel: "Seasonal Menu",
   },
   "romantic-dinner": {
     label: "Romantic Dinner",
@@ -50,61 +61,220 @@ const themeClassNames = Object.values(themes).map(
 
 const inputFields = {
   title: document.querySelector("#menu-title"),
-  starter: document.querySelector("#starter"),
-  starterDescription: document.querySelector("#starter-description"),
-  mainCourse: document.querySelector("#main-course"),
-  mainCourseDescription: document.querySelector("#main-course-description"),
-  dessert: document.querySelector("#dessert"),
-  dessertDescription: document.querySelector("#dessert-description"),
-  drinks: document.querySelector("#drinks"),
-  drinksDescription: document.querySelector("#drinks-description"),
 };
 
+const courseEditors = document.querySelectorAll(".course-editor");
+const courseDefinitionsById = new Map(
+  courseDefinitions.map((course) => [course.id, course]),
+);
+const courseDishCounters = new Map();
+const dishCapacityFeedback = document.querySelector(
+  "#dish-capacity-feedback",
+);
+const contentLengthFeedback = document.querySelector(
+  "#content-length-feedback",
+);
+const contentLengthFeedbackList = document.querySelector(
+  "#content-length-feedback-list",
+);
+
+function getValidDishCount(courseEditor) {
+  return Array.from(courseEditor.querySelectorAll(".dish-input-item")).filter(
+    (dishItem) => dishItem.querySelector("input").value.trim() !== "",
+  ).length;
+}
+
+function getFormValidDishCount() {
+  return Array.from(courseEditors).reduce(
+    (total, courseEditor) => total + getValidDishCount(courseEditor),
+    0,
+  );
+}
+
+function syncDishCapacityFeedback() {
+  const totalDishCount = getFormValidDishCount();
+  const hasReachedMenuLimit = totalDishCount >= MAX_DISHES_PER_MENU;
+
+  courseEditors.forEach((courseEditor) => {
+    const addButton = courseEditor.querySelector("[data-add-dish]");
+    const categoryHint = courseEditor.querySelector(
+      "[data-category-capacity-hint]",
+    );
+    const categoryDishCount = getValidDishCount(courseEditor);
+
+    addButton.disabled = hasReachedMenuLimit;
+    if (hasReachedMenuLimit) {
+      addButton.setAttribute("aria-describedby", "dish-capacity-feedback");
+    } else {
+      addButton.removeAttribute("aria-describedby");
+    }
+
+    categoryHint.hidden =
+      categoryDishCount < RECOMMENDED_DISHES_PER_CATEGORY;
+  });
+
+  if (hasReachedMenuLimit) {
+    dishCapacityFeedback.textContent =
+      "Maximum of 6 dishes reached. Remove a dish to add another.";
+    dishCapacityFeedback.classList.add("is-limit");
+    dishCapacityFeedback.hidden = false;
+  } else if (totalDishCount >= IDEAL_DISHES_PER_MENU) {
+    dishCapacityFeedback.textContent =
+      "4 dishes is the ideal visual capacity. Keep content concise as you add more.";
+    dishCapacityFeedback.classList.remove("is-limit");
+    dishCapacityFeedback.hidden = false;
+  } else {
+    dishCapacityFeedback.textContent = "";
+    dishCapacityFeedback.classList.remove("is-limit");
+    dishCapacityFeedback.hidden = true;
+  }
+}
+
+function createDishInputItem(courseEditor, dishNumber) {
+  const courseId = courseEditor.dataset.course;
+  const courseLabel = courseDefinitionsById.get(courseId)?.label || courseId;
+  const dishItem = document.createElement("div");
+  const nameField = document.createElement("div");
+  const nameLabel = document.createElement("label");
+  const nameLabelPrimary = document.createElement("span");
+  const nameLabelSecondary = document.createElement("span");
+  const nameInput = document.createElement("input");
+  const descriptionField = document.createElement("div");
+  const descriptionLabel = document.createElement("label");
+  const descriptionInput = document.createElement("textarea");
+  const removeButton = document.createElement("button");
+  const nameId = `${courseId}-dish-${dishNumber}-name`;
+  const descriptionId = `${courseId}-dish-${dishNumber}-description`;
+
+  dishItem.className = "dish-input-item is-removable";
+  dishItem.dataset.dishNumber = String(dishNumber);
+
+  nameField.className = "form-field";
+  nameLabel.htmlFor = nameId;
+  nameLabelPrimary.className = "label-primary";
+  nameLabelPrimary.textContent = "Dish Name";
+  nameLabelSecondary.className = "label-secondary";
+  nameLabelSecondary.textContent = "菜品名称";
+  nameLabel.append(nameLabelPrimary, nameLabelSecondary);
+
+  nameInput.id = nameId;
+  nameInput.name = `${courseId}Dishes[${dishNumber}][name]`;
+  nameInput.type = "text";
+  nameInput.placeholder = courseEditor.dataset.namePlaceholder;
+  nameField.append(nameLabel, nameInput);
+
+  descriptionField.className = "form-field description-field";
+  descriptionLabel.htmlFor = descriptionId;
+  descriptionLabel.textContent = "Description";
+  descriptionInput.id = descriptionId;
+  descriptionInput.className = "description-input";
+  descriptionInput.name = `${courseId}Dishes[${dishNumber}][description]`;
+  descriptionInput.rows = 2;
+  descriptionInput.placeholder = courseEditor.dataset.descriptionPlaceholder;
+  descriptionField.append(descriptionLabel, descriptionInput);
+
+  removeButton.className = "remove-dish-button";
+  removeButton.type = "button";
+  removeButton.dataset.removeDish = "";
+  removeButton.textContent = "Remove Dish";
+  removeButton.setAttribute(
+    "aria-label",
+    `Remove ${courseLabel} dish ${dishNumber}`,
+  );
+
+  dishItem.append(nameField, descriptionField, removeButton);
+
+  return dishItem;
+}
+
+function addDishInput(courseEditor) {
+  if (getFormValidDishCount() >= MAX_DISHES_PER_MENU) {
+    syncDishCapacityFeedback();
+    return;
+  }
+
+  const dishList = courseEditor.querySelector("[data-dish-list]");
+  const nextDishNumber = (courseDishCounters.get(courseEditor) || 1) + 1;
+  const dishItem = createDishInputItem(courseEditor, nextDishNumber);
+
+  courseDishCounters.set(courseEditor, nextDishNumber);
+  dishList.append(dishItem);
+  dishItem.querySelector("input")?.focus();
+  syncDishCapacityFeedback();
+}
+
+function removeDishInput(courseEditor, removeButton) {
+  const dishItem = removeButton.closest(".dish-input-item");
+
+  if (!dishItem?.classList.contains("is-removable")) {
+    return;
+  }
+
+  const dishItems = Array.from(
+    courseEditor.querySelectorAll(".dish-input-item"),
+  );
+  const currentIndex = dishItems.indexOf(dishItem);
+  const focusTarget =
+    dishItems[currentIndex + 1]?.querySelector("input") ||
+    dishItems[currentIndex - 1]?.querySelector("input") ||
+    courseEditor.querySelector("[data-add-dish]");
+
+  dishItem.remove();
+  syncDishCapacityFeedback();
+  focusTarget?.focus();
+}
+
+function initializeCourseEditors() {
+  courseEditors.forEach((courseEditor) => {
+    const initialDishCount = courseEditor.querySelectorAll(
+      ".dish-input-item",
+    ).length;
+
+    courseDishCounters.set(courseEditor, initialDishCount);
+
+    courseEditor
+      .querySelector("[data-add-dish]")
+      ?.addEventListener("click", () => addDishInput(courseEditor));
+
+    courseEditor
+      .querySelector("[data-dish-list]")
+      ?.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("[data-remove-dish]");
+
+        if (removeButton) {
+          removeDishInput(courseEditor, removeButton);
+        }
+      });
+
+    courseEditor
+      .querySelector("[data-dish-list]")
+      ?.addEventListener("input", () => {
+        syncDishCapacityFeedback();
+        updateContentLengthFeedback();
+      });
+  });
+
+  syncDishCapacityFeedback();
+}
+
 const previewCourses = {
-  starter: {
+  "starter": {
     row: document.querySelector("#preview-starter-row"),
-    text: document.querySelector("#preview-starter"),
-    description: document.querySelector("#preview-starter-description"),
+    dishes: document.querySelector("#preview-starter-dishes"),
   },
-  mainCourse: {
+  "main-course": {
     row: document.querySelector("#preview-main-course-row"),
-    text: document.querySelector("#preview-main-course"),
-    description: document.querySelector("#preview-main-course-description"),
+    dishes: document.querySelector("#preview-main-course-dishes"),
   },
   dessert: {
     row: document.querySelector("#preview-dessert-row"),
-    text: document.querySelector("#preview-dessert"),
-    description: document.querySelector("#preview-dessert-description"),
+    dishes: document.querySelector("#preview-dessert-dishes"),
   },
   drinks: {
     row: document.querySelector("#preview-drinks-row"),
-    text: document.querySelector("#preview-drinks"),
-    description: document.querySelector("#preview-drinks-description"),
+    dishes: document.querySelector("#preview-drinks-dishes"),
   },
 };
-
-const dishValidationRules = [
-  {
-    nameKey: "starter",
-    descriptionKey: "starterDescription",
-    label: "Starter",
-  },
-  {
-    nameKey: "mainCourse",
-    descriptionKey: "mainCourseDescription",
-    label: "Main Course",
-  },
-  {
-    nameKey: "dessert",
-    descriptionKey: "dessertDescription",
-    label: "Dessert",
-  },
-  {
-    nameKey: "drinks",
-    descriptionKey: "drinksDescription",
-    label: "Drinks",
-  },
-];
 
 function applyTitleLengthClass(title) {
   const visualLength = Array.from(title).reduce((length, character) => {
@@ -177,60 +347,90 @@ previewTitleObserver.observe(previewTitle, {
 function readMenuForm() {
   return {
     title: inputFields.title.value.trim(),
-    starter: inputFields.starter.value.trim(),
-    starterDescription: inputFields.starterDescription.value.trim(),
-    mainCourse: inputFields.mainCourse.value.trim(),
-    mainCourseDescription: inputFields.mainCourseDescription.value.trim(),
-    dessert: inputFields.dessert.value.trim(),
-    dessertDescription: inputFields.dessertDescription.value.trim(),
-    drinks: inputFields.drinks.value.trim(),
-    drinksDescription: inputFields.drinksDescription.value.trim(),
+    courses: courseDefinitions.map((courseDefinition) => {
+      const courseEditor = document.querySelector(
+        `[data-course="${courseDefinition.id}"]`,
+      );
+      const dishes = Array.from(
+        courseEditor.querySelectorAll(".dish-input-item"),
+      ).map((dishItem) => ({
+        name: dishItem.querySelector("input").value.trim(),
+        description: dishItem.querySelector("textarea").value.trim(),
+      }));
+
+      return {
+        ...courseDefinition,
+        dishes,
+      };
+    }),
   };
 }
 
-function updateCoursePreview(coursePreview, name, description) {
-  coursePreview.text.textContent = name;
-  coursePreview.text.hidden = name === "";
-  coursePreview.description.textContent = description;
-  coursePreview.description.hidden = name === "" || description === "";
-  coursePreview.row.hidden = name === "";
+function updateContentLengthFeedback(menu = readMenuForm()) {
+  const warnings = getContentLengthWarnings(menu);
+
+  contentLengthFeedbackList.replaceChildren(
+    ...warnings.map((warning) => {
+      const item = document.createElement("li");
+
+      item.textContent = warning;
+      return item;
+    }),
+  );
+  contentLengthFeedback.hidden = warnings.length === 0;
 }
 
-function validateDishDescriptions(menu) {
-  const invalidDishLabels = [];
+function updateCoursePreview(coursePreview, course) {
+  const validDishes = getValidDishes(course);
+  const dishElements = validDishes.map((dish) => {
+    const dishElement = document.createElement("div");
+    const nameElement = document.createElement("p");
+    const descriptionElement = document.createElement("p");
 
-  dishValidationRules.forEach((rule) => {
-    const hasName = menu[rule.nameKey] !== "";
-    const hasDescription = menu[rule.descriptionKey] !== "";
+    dishElement.className = "course-dish";
+    nameElement.className = "course-name";
+    nameElement.textContent = dish.name;
+    descriptionElement.className = "course-description";
+    descriptionElement.textContent = dish.description;
+    descriptionElement.hidden = dish.description === "";
+    dishElement.append(nameElement, descriptionElement);
 
-    if (!hasName && hasDescription) {
-      invalidDishLabels.push(rule.label);
-    }
+    return dishElement;
   });
 
-  return invalidDishLabels;
+  coursePreview.dishes.replaceChildren(...dishElements);
+  coursePreview.row.hidden = validDishes.length === 0;
 }
 
 function generateMenuPreview() {
   const menu = readMenuForm();
   const invalidDishLabels = validateDishDescriptions(menu);
+  const totalDishCount = getTotalValidDishCount(menu);
+  const validationErrors = [];
+
+  updateContentLengthFeedback(menu);
 
   if (invalidDishLabels.length > 0) {
-    formError.textContent =
+    validationErrors.push(
       "Please enter dish names before adding descriptions: " +
-      invalidDishLabels.join(", ");
-    formError.hidden = false;
-    return;
+        invalidDishLabels.join(", "),
+    );
   }
 
-  const hasDishContent = dishValidationRules.some(
-    (rule) =>
-      menu[rule.nameKey] !== "" || menu[rule.descriptionKey] !== "",
-  );
+  if (!hasValidDish(menu)) {
+    validationErrors.push(
+      "Your menu is empty. Please add at least one dish before generating.",
+    );
+  }
 
-  if (!hasDishContent) {
-    formError.textContent =
-      "Your menu is empty. Please add at least one dish before generating.";
+  if (totalDishCount > MAX_DISHES_PER_MENU) {
+    validationErrors.push(
+      `Your menu can include a maximum of ${MAX_DISHES_PER_MENU} dishes. Please remove a dish before generating.`,
+    );
+  }
+
+  if (validationErrors.length > 0) {
+    formError.textContent = validationErrors.join(" • ");
     formError.hidden = false;
     return;
   }
@@ -238,26 +438,9 @@ function generateMenuPreview() {
   formError.hidden = true;
 
   previewTitle.textContent = menu.title || "Chef’s Menu";
-  updateCoursePreview(
-    previewCourses.starter,
-    menu.starter,
-    menu.starterDescription,
-  );
-  updateCoursePreview(
-    previewCourses.mainCourse,
-    menu.mainCourse,
-    menu.mainCourseDescription,
-  );
-  updateCoursePreview(
-    previewCourses.dessert,
-    menu.dessert,
-    menu.dessertDescription,
-  );
-  updateCoursePreview(
-    previewCourses.drinks,
-    menu.drinks,
-    menu.drinksDescription,
-  );
+  menu.courses.forEach((course) => {
+    updateCoursePreview(previewCourses[course.id], course);
+  });
 
   emptyPreview.hidden = true;
   menuPreview.hidden = false;
@@ -528,6 +711,7 @@ async function exportMenuAsPng() {
   }
 }
 
+initializeCourseEditors();
 renderThemePickerOptions();
 applyTheme(DEFAULT_THEME_ID);
 syncThemePickerAvailability();

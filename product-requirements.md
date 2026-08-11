@@ -241,7 +241,7 @@ Tiramisu
 
 ## Template 1
 
-Michelin Fine Dining
+Classic Fine Dining
 
 
 特点：
@@ -261,7 +261,7 @@ Michelin Fine Dining
 
 ## Template 2
 
-Modern European
+Modern
 
 
 特点：
@@ -452,3 +452,15 @@ AI 是增强体验，而不是替代用户创造。
 
 
 ---
+
+# 12. v0.3 Multi Dish Support 产品规则
+
+v0.3 在四个固定 Category（Starter、Main Course、Dessert、Drinks）中支持多个 Dish。以下容量规则用于保护 1080 × 1350 px、4:5 菜单作品的排版质量与 Theme 设计语言。
+
+- Maximum supported dishes per menu：**6 Dish**。
+- Recommended category limit：**每个 Category 最多 2 Dish**。
+- Ideal visual capacity：**每份菜单 4 Dish**。
+- Long content scenarios：当 Dish Title 或 Description 较长时，应优先控制在 **4 Dish**。
+- 不应通过缩小 typography、压缩 Dish / Category spacing 或减少 Theme whitespace 来解决容量问题。
+- 容量限制的目标是维持 Fine Dining、Editorial 与 Romantic 三种 Theme 的设计品质，而不是在单张菜单中容纳无限内容。
+- Export 高度检测继续作为最终保护；超过 1080 × 1350 px 画布容量的内容不应生成被截断或过度压缩的 PNG。

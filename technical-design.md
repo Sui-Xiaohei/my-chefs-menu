@@ -141,7 +141,7 @@ development-log.md
 
 完成标准：生成预览后可以在右侧切换模板；切换时菜单内容保持不变，只改变背景、文字、间距等视觉样式。
 
-完整的 Michelin Fine Dining、Modern European 和 Romantic Dinner 三套精细模板作为后续视觉完善任务，不阻挡第一条核心流程完成。
+完整的 Classic Fine Dining、Modern 和 Romantic Dinner 三套精细模板作为后续视觉完善任务，不阻挡第一条核心流程完成。
 
 ### 第五步：下载 PNG
 
@@ -257,7 +257,7 @@ Generate 使用默认模板创建第一次预览，不读取任何预先选择�
 
 当第一版核心流程稳定后，可以按实际需要逐步扩展：
 
-1. 把三个正式菜单模板完善为 Michelin Fine Dining、Modern European 和 Romantic Dinner。
+1. 把三个正式菜单模板完善为 Classic Fine Dining、Modern 和 Romantic Dinner。
 2. 加强手机和不同电脑屏幕的适配。
 3. 增加字体、装饰图片和更精细的导出效果。
 4. 当 `main.js` 过长时，再拆分菜单数据、预览、模板选择和图片导出模块。

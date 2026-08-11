@@ -43,104 +43,202 @@
               />
             </div>
 
-            <div class="form-field">
-              <label for="starter">
+            <fieldset
+              class="course-editor"
+              data-course="starter"
+              data-course-label="Starter"
+              data-name-placeholder="Dish name · 例如：Burrata Salad"
+              data-description-placeholder="Description · 例如：Heirloom tomatoes, basil oil and aged balsamic"
+            >
+              <legend>
                 <span class="label-primary">Starter</span>
                 <span class="label-secondary">前菜</span>
-              </label>
-              <input
-                id="starter"
-                name="starter"
-                type="text"
-                placeholder="例如：Burrata Salad"
-              />
-            </div>
+              </legend>
+              <div class="dish-input-list" data-dish-list>
+                <div class="dish-input-item" data-dish-number="1">
+                  <div class="form-field">
+                    <label for="starter">
+                      <span class="label-primary">Dish Name</span>
+                      <span class="label-secondary">菜品名称</span>
+                    </label>
+                    <input
+                      id="starter"
+                      name="starter"
+                      type="text"
+                      placeholder="Dish name · 例如：Burrata Salad"
+                    />
+                  </div>
+                  <div class="form-field description-field">
+                    <label for="starter-description">Description</label>
+                    <textarea
+                      id="starter-description"
+                      class="description-input"
+                      name="starterDescription"
+                      rows="2"
+                      placeholder="Description · 例如：Heirloom tomatoes, basil oil and aged balsamic"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <button class="add-dish-button" type="button" data-add-dish>
+                + Add another dish
+              </button>
+              <p class="category-capacity-hint" data-category-capacity-hint hidden>
+                For best menu balance, keep each category within 2 dishes.
+              </p>
+            </fieldset>
 
-            <div class="form-field description-field">
-              <label for="starter-description">Starter Description</label>
-              <textarea
-                id="starter-description"
-                class="description-input"
-                name="starterDescription"
-                rows="2"
-                placeholder="例如：Heirloom tomatoes, basil oil and aged balsamic"
-              ></textarea>
-            </div>
-
-            <div class="form-field">
-              <label for="main-course">
+            <fieldset
+              class="course-editor"
+              data-course="main-course"
+              data-course-label="Main Course"
+              data-name-placeholder="Dish name · 例如：Truffle Pasta"
+              data-description-placeholder="Description · 例如：Handmade pasta with black truffle cream"
+            >
+              <legend>
                 <span class="label-primary">Main Course</span>
                 <span class="label-secondary">主菜</span>
-              </label>
-              <input
-                id="main-course"
-                name="mainCourse"
-                type="text"
-                placeholder="例如：Truffle Pasta"
-              />
-            </div>
+              </legend>
+              <div class="dish-input-list" data-dish-list>
+                <div class="dish-input-item" data-dish-number="1">
+                  <div class="form-field">
+                    <label for="main-course">
+                      <span class="label-primary">Dish Name</span>
+                      <span class="label-secondary">菜品名称</span>
+                    </label>
+                    <input
+                      id="main-course"
+                      name="mainCourse"
+                      type="text"
+                      placeholder="Dish name · 例如：Truffle Pasta"
+                    />
+                  </div>
+                  <div class="form-field description-field">
+                    <label for="main-course-description">Description</label>
+                    <textarea
+                      id="main-course-description"
+                      class="description-input"
+                      name="mainCourseDescription"
+                      rows="2"
+                      placeholder="Description · 例如：Handmade pasta with black truffle cream"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <button class="add-dish-button" type="button" data-add-dish>
+                + Add another dish
+              </button>
+              <p class="category-capacity-hint" data-category-capacity-hint hidden>
+                For best menu balance, keep each category within 2 dishes.
+              </p>
+            </fieldset>
 
-            <div class="form-field description-field">
-              <label for="main-course-description"
-                >Main Course Description</label
-              >
-              <textarea
-                id="main-course-description"
-                class="description-input"
-                name="mainCourseDescription"
-                rows="2"
-                placeholder="例如：Handmade pasta with black truffle cream"
-              ></textarea>
-            </div>
-
-            <div class="form-field">
-              <label for="dessert">
+            <fieldset
+              class="course-editor"
+              data-course="dessert"
+              data-course-label="Dessert"
+              data-name-placeholder="Dish name · 例如：Tiramisu"
+              data-description-placeholder="Description · 例如：Mascarpone, espresso and cocoa"
+            >
+              <legend>
                 <span class="label-primary">Dessert</span>
                 <span class="label-secondary">甜点</span>
-              </label>
-              <input
-                id="dessert"
-                name="dessert"
-                type="text"
-                placeholder="例如：Tiramisu"
-              />
-            </div>
+              </legend>
+              <div class="dish-input-list" data-dish-list>
+                <div class="dish-input-item" data-dish-number="1">
+                  <div class="form-field">
+                    <label for="dessert">
+                      <span class="label-primary">Dish Name</span>
+                      <span class="label-secondary">菜品名称</span>
+                    </label>
+                    <input
+                      id="dessert"
+                      name="dessert"
+                      type="text"
+                      placeholder="Dish name · 例如：Tiramisu"
+                    />
+                  </div>
+                  <div class="form-field description-field">
+                    <label for="dessert-description">Description</label>
+                    <textarea
+                      id="dessert-description"
+                      class="description-input"
+                      name="dessertDescription"
+                      rows="2"
+                      placeholder="Description · 例如：Mascarpone, espresso and cocoa"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <button class="add-dish-button" type="button" data-add-dish>
+                + Add another dish
+              </button>
+              <p class="category-capacity-hint" data-category-capacity-hint hidden>
+                For best menu balance, keep each category within 2 dishes.
+              </p>
+            </fieldset>
 
-            <div class="form-field description-field">
-              <label for="dessert-description">Dessert Description</label>
-              <textarea
-                id="dessert-description"
-                class="description-input"
-                name="dessertDescription"
-                rows="2"
-                placeholder="例如：Mascarpone, espresso and cocoa"
-              ></textarea>
-            </div>
-
-            <div class="form-field">
-              <label for="drinks">
+            <fieldset
+              class="course-editor"
+              data-course="drinks"
+              data-course-label="Drinks"
+              data-name-placeholder="Dish name · 例如：Sparkling Wine"
+              data-description-placeholder="Description · 例如：Crisp, floral and lightly sparkling"
+            >
+              <legend>
                 <span class="label-primary">Drinks</span>
                 <span class="label-secondary">饮品</span>
-              </label>
-              <input
-                id="drinks"
-                name="drinks"
-                type="text"
-                placeholder="例如：Sparkling Wine"
-              />
-            </div>
+              </legend>
+              <div class="dish-input-list" data-dish-list>
+                <div class="dish-input-item" data-dish-number="1">
+                  <div class="form-field">
+                    <label for="drinks">
+                      <span class="label-primary">Dish Name</span>
+                      <span class="label-secondary">菜品名称</span>
+                    </label>
+                    <input
+                      id="drinks"
+                      name="drinks"
+                      type="text"
+                      placeholder="Dish name · 例如：Sparkling Wine"
+                    />
+                  </div>
+                  <div class="form-field description-field">
+                    <label for="drinks-description">Description（可选）</label>
+                    <textarea
+                      id="drinks-description"
+                      class="description-input"
+                      name="drinksDescription"
+                      rows="2"
+                      placeholder="Description · 例如：Crisp, floral and lightly sparkling"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <button class="add-dish-button" type="button" data-add-dish>
+                + Add another dish
+              </button>
+              <p class="category-capacity-hint" data-category-capacity-hint hidden>
+                For best menu balance, keep each category within 2 dishes.
+              </p>
+            </fieldset>
 
-            <div class="form-field description-field">
-              <label for="drinks-description"
-                >Drinks Description（可选）</label
-              >
-              <textarea
-                id="drinks-description"
-                class="description-input"
-                name="drinksDescription"
-                rows="2"
-                placeholder="例如：Crisp, floral and lightly sparkling"
-              ></textarea>
+            <p
+              id="dish-capacity-feedback"
+              class="dish-capacity-feedback"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></p>
+            <div
+              id="content-length-feedback"
+              class="content-length-feedback"
+              role="status"
+              aria-live="polite"
+              hidden
+            >
+              <p>For the best export result, consider shortening:</p>
+              <ul id="content-length-feedback-list"></ul>
             </div>
 
             <button id="generate-button" class="generate-button" type="button">
@@ -167,7 +265,7 @@
                 aria-controls="theme-picker-list"
                 aria-disabled="true"
               >
-                <span id="theme-picker-current">Michelin Fine Dining</span>
+                <span id="theme-picker-current">Classic Fine Dining</span>
                 <span class="theme-picker-chevron" aria-hidden="true"></span>
               </button>
               <div
@@ -214,38 +312,34 @@
               <div class="menu-courses">
                 <div id="preview-starter-row" class="menu-course" hidden>
                   <p class="course-label">Starter</p>
-                  <p id="preview-starter" class="course-name"></p>
-                  <p
-                    id="preview-starter-description"
-                    class="course-description"
-                  ></p>
+                  <div
+                    id="preview-starter-dishes"
+                    class="course-dishes"
+                  ></div>
                 </div>
 
                 <div id="preview-main-course-row" class="menu-course" hidden>
                   <p class="course-label">Main Course</p>
-                  <p id="preview-main-course" class="course-name"></p>
-                  <p
-                    id="preview-main-course-description"
-                    class="course-description"
-                  ></p>
+                  <div
+                    id="preview-main-course-dishes"
+                    class="course-dishes"
+                  ></div>
                 </div>
 
                 <div id="preview-dessert-row" class="menu-course" hidden>
                   <p class="course-label">Dessert</p>
-                  <p id="preview-dessert" class="course-name"></p>
-                  <p
-                    id="preview-dessert-description"
-                    class="course-description"
-                  ></p>
+                  <div
+                    id="preview-dessert-dishes"
+                    class="course-dishes"
+                  ></div>
                 </div>
 
                 <div id="preview-drinks-row" class="menu-course" hidden>
                   <p class="course-label">Drinks</p>
-                  <p id="preview-drinks" class="course-name"></p>
-                  <p
-                    id="preview-drinks-description"
-                    class="course-description"
-                  ></p>
+                  <div
+                    id="preview-drinks-dishes"
+                    class="course-dishes"
+                  ></div>
                 </div>
               </div>
             </div>
