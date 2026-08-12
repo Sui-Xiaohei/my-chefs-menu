@@ -1,4 +1,7 @@
-/* Local English theme fonts. Chinese glyphs continue through system fallbacks. */
+@import "./assets/fonts/noto-serif-sc/font-face.css";
+@import "./assets/fonts/noto-sans-sc/font-face.css";
+
+/* Local English and Simplified Chinese theme fonts. */
 
 @font-face {
   font-family: "Playfair Display";

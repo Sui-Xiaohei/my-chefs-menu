@@ -1,0 +1,73 @@
+@import "./fonts.css";
+
+:root {
+  color: #292522;
+  background: #e8e3dc;
+  font-family: Arial, "Noto Sans SC", sans-serif;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+.page-header, main, footer { width: min(1500px, calc(100% - 48px)); margin-inline: auto; }
+.page-header { padding: 72px 0 42px; }
+.page-header h1 { margin: 8px 0 12px; font: 500 clamp(2rem, 5vw, 4rem)/1.1 "Noto Serif SC", serif; }
+.page-header p, .section-copy p { max-width: 720px; color: #68615b; line-height: 1.7; }
+.eyebrow { margin: 0; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+.theme-section { padding: 54px 0 72px; border-top: 1px solid #cfc7bf; }
+.section-copy { margin-bottom: 28px; }
+.section-copy h2 { margin: 8px 0; font: 500 2rem/1.2 "Playfair Display", "Noto Serif SC", serif; }
+.comparison-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.menu-card { min-width: 0; overflow: hidden; border: 1px solid rgb(0 0 0 / 10%); }
+.candidate { display: flex; min-height: 48px; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 12px 16px; background: rgb(255 255 255 / 92%); color: #393431; font-size: 0.75rem; letter-spacing: 0.04em; }
+.status { flex: none; padding: 4px 7px; border-radius: 20px; font-size: 0.62rem; letter-spacing: 0.04em; }
+.status.available { color: #17633d; background: #e5f3ea; }
+.status.unavailable { color: #8a3c35; background: #fae8e5; }
+.menu-sample { min-height: 620px; padding: 76px 44px; }
+.menu-label, .category, .dish-name, .description { margin: 0; }
+.menu-label { font-size: 0.68rem; letter-spacing: 0.18em; }
+.menu-sample h3 { margin: 26px 0 0; }
+.menu-sample h3 span, .menu-sample h3 small { display: block; }
+.menu-sample h3 span { font-size: 2.65rem; font-weight: 500; line-height: 1.25; }
+.menu-sample h3 small { margin-top: 10px; font-size: 1.35rem; font-weight: 400; }
+.rule { margin: 30px 0 46px; }
+.category { margin-bottom: 32px; font-size: 0.78rem; letter-spacing: 0.16em; }
+.dish-name { font-size: 1.65rem; line-height: 1.4; }
+.dish-name.english { margin-top: 8px; font-size: 1.15rem; }
+.description { margin-top: 15px; font-size: 0.94rem; line-height: 1.75; }
+.description.english { margin-top: 7px; font-size: 0.78rem; }
+
+.classic .menu-sample { color: #f1e8d8; background: #090908; text-align: center; box-shadow: inset 0 0 0 8px #090908, inset 0 0 0 9px rgb(196 154 70 / 35%); }
+.classic .menu-label, .classic .category { color: #c49a46; font-family: "Libre Baskerville", serif; }
+.classic h3 small, .classic .dish-name.english { font-family: "Playfair Display", serif; }
+.classic .description { color: #aa9a80; }
+.classic .description.english { font-family: "Libre Baskerville", serif; font-style: italic; }
+.classic .rule { width: 80px; height: 1px; margin-inline: auto; background: #725d35; }
+
+.modern .menu-sample { color: #181a18; background: #faf8f2; text-align: left; box-shadow: inset 0 0 0 10px #faf8f2, inset 0 0 0 11px rgb(37 39 36 / 12%); }
+.modern .menu-label, .modern .category, .modern .dish-name.english, .modern .description.english { font-family: Arial, sans-serif; }
+.modern .menu-label, .modern .category { color: #c65338; }
+.modern h3 small { font-family: "Playfair Display", serif; }
+.modern .rule { width: 100%; height: 1px; background: #d3d1c9; }
+.modern .category { padding-left: 15px; border-left: 4px solid #c65338; }
+.modern .description { color: #777a75; }
+
+.romantic .menu-sample { color: #55202e; background: #f8eeeb; text-align: center; box-shadow: inset 0 0 0 8px #f8eeeb, inset 0 0 0 9px rgb(189 111 126 / 30%); }
+.romantic .menu-label, .romantic .category { color: #bd6f7e; font-family: "Cormorant Garamond", serif; font-style: italic; }
+.romantic h3 small, .romantic .dish-name.english { font-family: "Cormorant Garamond", serif; font-style: italic; }
+.romantic .description { color: #92757a; }
+.romantic .description.english { font-family: "Cormorant Garamond", serif; font-style: italic; }
+.romantic .rule { color: #deb8bf; font: 400 2rem/1 "Cormorant Garamond", serif; }
+
+.candidate-noto-serif [lang="zh-CN"] { font-family: "Noto Serif SC"; }
+.candidate-source-serif [lang="zh-CN"] { font-family: "Source Han Serif SC"; }
+.candidate-wenkai [lang="zh-CN"] { font-family: "LXGW WenKai"; }
+.candidate-noto-sans [lang="zh-CN"] { font-family: "Noto Sans SC"; }
+.candidate-source-sans [lang="zh-CN"] { font-family: "Source Han Sans SC"; }
+.candidate-plex [lang="zh-CN"] { font-family: "IBM Plex Sans SC"; }
+.menu-card.font-unavailable .menu-sample { opacity: 0.28; }
+.menu-card.font-unavailable .menu-sample::after { display: block; margin-top: 42px; color: currentcolor; content: "Font unavailable on this device"; font: 500 0.75rem/1.4 Arial, sans-serif; letter-spacing: 0.08em; }
+footer { padding: 0 0 72px; color: #6d655e; font-size: 0.78rem; }
+
+@media (max-width: 1050px) { .comparison-grid { grid-template-columns: 1fr; } .menu-sample { min-height: 560px; } }
+@media (max-width: 600px) { .page-header, main, footer { width: min(100% - 24px, 1500px); } .page-header { padding-top: 48px; } .menu-sample { min-height: 520px; padding: 64px 28px; } }

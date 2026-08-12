@@ -767,23 +767,31 @@ h1 {
 /* Michelin theme styles              */
 /* ---------------------------------- */
 .menu-placeholder.theme-michelin {
-  --menu-background: #171714;
-  --menu-primary-text: #f2eee5;
-  --menu-secondary-text: #b8b2a7;
-  --menu-accent: #b7a275;
-  --menu-divider: #625b49;
-  --menu-border: #34322d;
+  --menu-background: #090908;
+  --menu-primary-text: #f2ebdd;
+  --menu-secondary-text: #aa9a80;
+  --menu-title: #b99a61;
+  --menu-accent: #c49a46;
+  --menu-divider: #725d35;
+  --menu-border: #594824;
 
-  box-shadow: 0 30px 80px rgb(15 13 10 / 22%);
+  border-color: var(--menu-border);
+  background: var(--menu-background);
+  box-shadow:
+    inset 0 0 0 7px var(--menu-background),
+    inset 0 0 0 8px rgb(196 154 70 / 28%),
+    0 30px 80px rgb(15 13 10 / 28%);
 }
 
 .theme-michelin .menu-label {
-  margin-bottom: 14px;
+  margin-bottom: 18px;
   color: var(--menu-accent);
+  font-family: "Libre Baskerville", "Noto Sans SC", "Source Han Sans SC", sans-serif;
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-weight: 400;
+  letter-spacing: 0.24em;
   line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .theme-michelin .preview-content h2 {
@@ -791,12 +799,12 @@ h1 {
   width: min(100%, 10.5em);
   max-width: none;
   margin-inline: auto;
-  color: var(--menu-primary-text);
-  font-family: "Playfair Display", "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
-  font-size: clamp(1.875rem, 4.5vw, 2.375rem);
+  color: var(--menu-title);
+  font-family: "Playfair Display", "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  font-size: clamp(2.125rem, 5vw, 2.75rem);
   font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 1.12;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
   white-space: normal;
   text-wrap: balance;
   overflow-wrap: anywhere;
@@ -809,13 +817,13 @@ h1 {
 }
 
 .theme-michelin .title-secondary {
-  margin-top: 10px;
+  margin-top: 12px;
   color: var(--menu-secondary-text);
-  font-family: "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
-  font-size: 0.52em;
+  font-family: "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  font-size: 0.46em;
   font-weight: 400;
-  letter-spacing: 0.04em;
-  line-height: 1.45;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
 }
 
 .theme-michelin .preview-content h2.is-long-title {
@@ -829,87 +837,102 @@ h1 {
 }
 
 .theme-michelin .divider {
-  width: 44px;
-  margin: 28px auto 42px;
+  width: 76px;
+  margin: 30px auto 44px;
   background: var(--menu-divider);
 }
 
 .theme-michelin .menu-courses {
-  max-width: 430px;
+  max-width: 440px;
   margin-inline: auto;
-  gap: 40px;
+  gap: 42px;
 }
 
 .theme-michelin .course-dishes {
-  gap: 18px;
+  gap: 20px;
 }
 
 .theme-michelin .course-label {
-  margin-bottom: 8px;
-  color: #9b8d6c;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  color: var(--menu-accent);
+  font-family: "Libre Baskerville", "Noto Sans SC", "Source Han Sans SC", sans-serif;
   font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 400;
+  letter-spacing: 0.22em;
   line-height: 1.4;
+  white-space: nowrap;
+}
+
+.theme-michelin .course-label::before,
+.theme-michelin .course-label::after {
+  width: 100%;
+  height: 1px;
+  flex: 1;
+  background: rgb(196 154 70 / 38%);
+  content: "";
 }
 
 .theme-michelin .course-name {
-  max-width: 430px;
+  max-width: 440px;
   margin-inline: auto;
   color: var(--menu-primary-text);
-  font-family: "Playfair Display", "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
-  font-size: 1.1875rem;
-  font-weight: 400;
-  letter-spacing: 0.005em;
-  line-height: 1.35;
+  font-family: "Playfair Display", "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
 }
 
 .theme-michelin .course-description {
-  max-width: 390px;
-  margin-top: 5px;
+  max-width: 400px;
+  margin-top: 7px;
   color: var(--menu-secondary-text);
-  font-family: Arial, "Songti SC", "Noto Serif SC", sans-serif;
-  font-size: 0.8125rem;
-  font-style: normal;
+  font-family: "Libre Baskerville", "Noto Serif SC", "Source Han Serif SC", serif;
+  font-size: 0.75rem;
+  font-style: italic;
   font-weight: 400;
-  letter-spacing: 0.015em;
-  line-height: 1.65;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
 }
 
 /* ---------------------------------- */
 /* Modern European theme styles       */
 /* ---------------------------------- */
 .menu-placeholder.theme-modern-european {
-  --menu-background: #eae5da;
-  --menu-primary-text: #202421;
-  --menu-secondary-text: #6e726d;
-  --menu-accent: #a45d48;
-  --menu-divider: #bfc1b9;
-  --menu-border: #d2cfc6;
+  --menu-background: #faf8f2;
+  --menu-primary-text: #181a18;
+  --menu-secondary-text: #777a75;
+  --menu-accent: #c65338;
+  --menu-divider: #d3d1c9;
+  --menu-strong-divider: #252724;
+  --menu-border: #dedbd2;
 
   background-image:
     url("/modern-european-olive.svg"),
     url("/modern-european-wheat.svg");
   background-repeat: no-repeat;
   background-position:
-    right -42px top 18px,
-    left -70px bottom 0;
+    right -40px top 22px,
+    left -68px bottom -4px;
   background-size:
     150px auto,
-    118px auto;
-  outline: 1px solid rgb(210 207 198 / 50%);
+    116px auto;
+  outline: 1px solid rgb(37 39 36 / 10%);
   outline-offset: -11px;
   text-align: left;
-  box-shadow: 0 16px 44px rgb(55 61 56 / 8%);
+  box-shadow: 0 10px 30px rgb(55 61 56 / 5%);
 }
 
 .theme-modern-european .menu-label {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   color: var(--menu-accent);
-  font-family: Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+  font-family: Arial, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 0.625rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   line-height: 1.4;
 }
 
@@ -919,7 +942,7 @@ h1 {
   max-width: none;
   margin: 0;
   color: var(--menu-primary-text);
-  font-family: "Playfair Display", "PingFang SC", "Noto Sans SC", Georgia, "Times New Roman", serif;
+  font-family: "Playfair Display", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 2.625rem;
   font-weight: 500;
   letter-spacing: -0.005em;
@@ -938,10 +961,10 @@ h1 {
 .theme-modern-european .title-secondary {
   margin-top: 12px;
   color: var(--menu-secondary-text);
-  font-family: "PingFang SC", "Noto Sans SC", Georgia, "Times New Roman", serif;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 0.46em;
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   line-height: 1.45;
 }
 
@@ -957,78 +980,119 @@ h1 {
 
 .theme-modern-european .divider {
   width: min(100%, 560px);
-  margin: 34px 0 38px;
+  height: 1px;
+  margin: 34px 0 40px;
   background: var(--menu-divider);
 }
 
 .theme-modern-european .menu-courses {
   max-width: 560px;
   margin: 0;
-  gap: 36px;
+  gap: 38px;
 }
 
 .theme-modern-european .course-dishes {
-  gap: 19px;
+  gap: 0;
+}
+
+.theme-modern-european .course-dish + .course-dish {
+  padding-top: 18px;
+  margin-top: 18px;
+  border-top: 1px solid var(--menu-divider);
 }
 
 .theme-modern-european .course-label {
-  margin-bottom: 10px;
+  position: relative;
+  margin-bottom: 16px;
+  padding-left: 14px;
   color: var(--menu-accent);
-  font-family: Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+  font-family: Arial, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 0.625rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   line-height: 1.4;
-  opacity: 0.9;
+}
+
+.theme-modern-european .course-label::before {
+  position: absolute;
+  top: 0.04em;
+  bottom: 0.04em;
+  left: 0;
+  width: 4px;
+  background: var(--menu-accent);
+  content: "";
 }
 
 .theme-modern-european .course-name {
   max-width: 560px;
   margin: 0;
   color: var(--menu-primary-text);
-  font-family: "Libre Baskerville", "PingFang SC", "Noto Sans SC", Georgia, serif;
+  font-family: "Libre Baskerville", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 1.125rem;
   font-weight: 400;
   letter-spacing: 0.005em;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .theme-modern-european .course-description {
   max-width: 520px;
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   color: var(--menu-secondary-text);
-  font-family: Arial, "PingFang SC", "Noto Sans SC", sans-serif;
-  font-size: 0.875rem;
+  font-family: Arial, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 0.8125rem;
   font-style: normal;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
 /* ---------------------------------- */
 /* Romantic Dinner theme styles       */
 /* ---------------------------------- */
 .menu-placeholder.theme-romantic-dinner {
-  --menu-background: #f1e5e1;
-  --menu-primary-text: #702b3b;
-  --menu-secondary-text: #8b6b71;
-  --menu-accent: #a94f5e;
-  --menu-divider: #cbaeb1;
-  --menu-border: #ddceca;
+  --menu-background: #f8eeeb;
+  --menu-primary-text: #55202e;
+  --menu-secondary-text: #92757a;
+  --menu-accent: #bd6f7e;
+  --menu-divider: #deb8bf;
+  --menu-border: #dfc5c8;
 
   text-align: center;
-  box-shadow: 0 18px 52px rgb(92 55 62 / 12%);
+  box-shadow:
+    inset 0 0 0 7px var(--menu-background),
+    inset 0 0 0 8px rgb(189 111 126 / 28%),
+    0 18px 48px rgb(79 38 48 / 9%);
 }
 
 .theme-romantic-dinner .menu-label {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   color: var(--menu-accent);
-  font-family: Arial, "Songti SC", "Noto Serif SC", sans-serif;
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   line-height: 1.4;
   text-transform: uppercase;
+}
+
+.theme-romantic-dinner .menu-label::before,
+.theme-romantic-dinner .menu-label::after {
+  display: inline-block;
+  color: var(--menu-accent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.9em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  content: "\2661";
+}
+
+.theme-romantic-dinner .menu-label::before {
+  margin-right: 0.8em;
+}
+
+.theme-romantic-dinner .menu-label::after {
+  margin-left: 0.8em;
 }
 
 .theme-romantic-dinner .preview-content h2 {
@@ -1037,12 +1101,13 @@ h1 {
   max-width: none;
   margin-inline: auto;
   color: var(--menu-primary-text);
-  font-family: "Parisienne", "Songti SC", "Noto Serif SC", "Segoe Script", cursive;
-  font-size: 2.875rem;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.1;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 3rem;
+  font-style: italic;
+  font-synthesis: none;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
   white-space: normal;
   text-wrap: balance;
   overflow-wrap: anywhere;
@@ -1059,11 +1124,12 @@ h1 {
   margin-top: 16px;
   margin-inline: auto;
   color: var(--menu-secondary-text);
-  font-family: "Cormorant Garamond", "Songti SC", "Noto Serif SC", Georgia, serif;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
   font-size: 0.43em;
   font-style: normal;
+  font-synthesis: none;
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   line-height: 1.5;
 }
 
@@ -1079,26 +1145,26 @@ h1 {
 
 .theme-romantic-dinner .divider {
   display: flex;
-  width: 70px;
-  height: 20px;
+  width: 66px;
+  height: 18px;
   align-items: center;
   justify-content: center;
-  margin: 25px auto 32px;
+  margin: 27px auto 34px;
   background: none;
 }
 
 .theme-romantic-dinner .romantic-signature {
   display: block;
-  width: 68px;
-  height: 20px;
+  width: 64px;
+  height: 18px;
   object-fit: contain;
-  opacity: 0.68;
+  opacity: 0.48;
 }
 
 .theme-romantic-dinner .menu-courses {
   max-width: 440px;
   margin-inline: auto;
-  gap: 36px;
+  gap: 38px;
 }
 
 .theme-romantic-dinner .course-dishes {
@@ -1106,27 +1172,42 @@ h1 {
 }
 
 .theme-romantic-dinner .menu-course {
-  text-align: left;
+  text-align: center;
 }
 
 .theme-romantic-dinner .course-label {
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 13px;
   color: var(--menu-accent);
-  font-family: Arial, "Songti SC", "Noto Serif SC", sans-serif;
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 0.875rem;
+  font-style: italic;
+  font-synthesis: none;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   line-height: 1.4;
-  opacity: 0.82;
+  opacity: 0.92;
+}
+
+.theme-romantic-dinner .course-label::before,
+.theme-romantic-dinner .course-label::after {
+  width: 34px;
+  height: 1px;
+  background: var(--menu-divider);
+  content: "";
 }
 
 .theme-romantic-dinner .course-name {
   max-width: 426px;
-  margin: 0 0 0 14px;
+  margin: 0 auto;
   color: var(--menu-primary-text);
-  font-family: "Cormorant Garamond", "Songti SC", "Noto Serif SC", Georgia, serif;
-  font-size: 1.375rem;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 1.4375rem;
   font-style: normal;
+  font-synthesis: none;
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1.35;
@@ -1134,14 +1215,15 @@ h1 {
 
 .theme-romantic-dinner .course-description {
   max-width: 406px;
-  margin: 5px 0 0 14px;
+  margin: 6px auto 0;
   color: var(--menu-secondary-text);
-  font-family: Arial, "Songti SC", "Noto Serif SC", sans-serif;
-  font-size: 0.8125rem;
-  font-style: normal;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 0.875rem;
+  font-style: italic;
+  font-synthesis: none;
   font-weight: 400;
-  letter-spacing: 0.015em;
-  line-height: 1.7;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
 }
 
 @media (max-width: 600px) {
@@ -1253,16 +1335,22 @@ h1 {
 /* Michelin export theme styles       */
 /* ---------------------------------- */
 .menu-placeholder.export-canvas.theme-michelin {
-  padding: 112px;
+  padding: 104px 112px;
+  border-color: var(--menu-border);
+  box-shadow:
+    inset 0 0 0 18px var(--menu-background),
+    inset 0 0 0 19px rgb(196 154 70 / 34%);
 }
 
 .export-canvas.theme-michelin .menu-label {
-  margin-bottom: 22px;
+  margin-bottom: 28px;
   color: var(--menu-accent);
+  font-family: "Libre Baskerville", "Noto Sans SC", "Source Han Sans SC", sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  font-weight: 400;
+  letter-spacing: 0.26em;
   line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .export-canvas.theme-michelin .preview-content h2 {
@@ -1270,12 +1358,12 @@ h1 {
   width: min(100%, 10.5em);
   max-width: none;
   margin-inline: auto;
-  color: var(--menu-primary-text);
-  font-family: "Playfair Display", "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
-  font-size: 56px;
+  color: var(--menu-title);
+  font-family: "Playfair Display", "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  font-size: 64px;
   font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 1.1;
+  letter-spacing: -0.015em;
+  line-height: 1.06;
   white-space: normal;
   text-wrap: balance;
   overflow-wrap: anywhere;
@@ -1283,91 +1371,99 @@ h1 {
 }
 
 .export-canvas.theme-michelin .title-secondary {
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
 .export-canvas.theme-michelin .preview-content h2.is-long-title {
   width: min(100%, 13em);
-  font-size: 50px;
+  font-size: 56px;
 }
 
 .export-canvas.theme-michelin .preview-content h2.is-extra-long-title {
   width: min(100%, 14em);
-  font-size: 46px;
+  font-size: 50px;
 }
 
 .export-canvas.theme-michelin .divider {
-  width: 72px;
-  margin: 40px auto 62px;
+  width: 112px;
+  margin: 44px auto 58px;
   background: var(--menu-divider);
 }
 
 .export-canvas.theme-michelin .menu-courses {
-  max-width: 760px;
+  max-width: 780px;
   margin-inline: auto;
-  gap: 50px;
+  gap: 48px;
 }
 
 .export-canvas.theme-michelin .course-dishes {
-  gap: 25px;
+  gap: 24px;
 }
 
 .export-canvas.theme-michelin .course-label {
-  margin-bottom: 12px;
-  color: #9b8d6c;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 18px;
+  color: var(--menu-accent);
+  font-family: "Libre Baskerville", "Noto Sans SC", "Source Han Sans SC", sans-serif;
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-weight: 400;
+  letter-spacing: 0.23em;
   line-height: 1.4;
+  white-space: nowrap;
 }
 
 .export-canvas.theme-michelin .course-name {
-  max-width: 760px;
+  max-width: 780px;
   margin-inline: auto;
   color: var(--menu-primary-text);
-  font-family: "Playfair Display", "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
-  font-size: 29px;
-  font-weight: 400;
-  letter-spacing: 0.005em;
-  line-height: 1.35;
+  font-family: "Playfair Display", "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
 }
 
 .export-canvas.theme-michelin .course-description {
-  max-width: 680px;
-  margin-top: 7px;
+  max-width: 700px;
+  margin-top: 9px;
   color: var(--menu-secondary-text);
-  font-family: Arial, "Songti SC", "Noto Serif SC", sans-serif;
-  font-size: 18px;
-  font-style: normal;
+  font-family: "Libre Baskerville", "Noto Serif SC", "Source Han Serif SC", serif;
+  font-size: 17px;
+  font-style: italic;
   font-weight: 400;
-  letter-spacing: 0.015em;
-  line-height: 1.6;
+  letter-spacing: 0.01em;
+  line-height: 1.55;
 }
 
 /* ---------------------------------- */
 /* Modern European export theme       */
 /* ---------------------------------- */
 .menu-placeholder.export-canvas.theme-modern-european {
-  padding: 112px 104px;
+  --menu-background: #f4f2ec;
+  --menu-border: #dedcd4;
+
+  padding: 104px 104px;
   background-position:
-    right -78px top 46px,
-    left -150px bottom -8px;
+    right -76px top 48px,
+    left -142px bottom -12px;
   background-size:
-    280px auto,
-    225px auto;
-  outline-color: rgb(210 207 198 / 60%);
+    272px auto,
+    218px auto;
+  outline-color: rgb(37 39 36 / 12%);
   outline-offset: -22px;
   text-align: left;
   box-shadow: none;
 }
 
 .export-canvas.theme-modern-european .menu-label {
-  margin-bottom: 24px;
+  margin-bottom: 26px;
   color: var(--menu-accent);
-  font-family: Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+  font-family: Arial, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.19em;
   line-height: 1.4;
 }
 
@@ -1377,7 +1473,7 @@ h1 {
   max-width: none;
   margin: 0;
   color: var(--menu-primary-text);
-  font-family: "Playfair Display", "PingFang SC", "Noto Sans SC", Georgia, "Times New Roman", serif;
+  font-family: "Playfair Display", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 64px;
   font-weight: 500;
   letter-spacing: -0.005em;
@@ -1407,67 +1503,95 @@ h1 {
 
 .export-canvas.theme-modern-european .divider {
   width: min(100%, 820px);
-  margin: 46px 0 50px;
+  height: 1px;
+  margin: 46px 0 52px;
   background: var(--menu-divider);
 }
 
 .export-canvas.theme-modern-european .menu-courses {
   max-width: 780px;
   margin: 0;
-  gap: 48px;
+  gap: 46px;
 }
 
 .export-canvas.theme-modern-european .course-dishes {
-  gap: 24px;
+  gap: 0;
+}
+
+.export-canvas.theme-modern-european .course-dish + .course-dish {
+  padding-top: 22px;
+  margin-top: 22px;
+  border-top: 1px solid var(--menu-divider);
 }
 
 .export-canvas.theme-modern-european .course-label {
-  margin-bottom: 14px;
+  position: relative;
+  margin-bottom: 20px;
+  padding-left: 20px;
   color: var(--menu-accent);
-  font-family: Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+  font-family: Arial, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   line-height: 1.4;
-  opacity: 0.9;
+}
+
+.export-canvas.theme-modern-european .course-label::before {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 0;
+  width: 6px;
+  background: var(--menu-accent);
+  content: "";
 }
 
 .export-canvas.theme-modern-european .course-name {
   max-width: 780px;
   margin: 0;
   color: var(--menu-primary-text);
-  font-family: "Libre Baskerville", "PingFang SC", "Noto Sans SC", Georgia, serif;
-  font-size: 24px;
+  font-family: "Libre Baskerville", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 25px;
   font-weight: 400;
   letter-spacing: 0.005em;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .export-canvas.theme-modern-european .course-description {
   max-width: 720px;
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   color: var(--menu-secondary-text);
-  font-family: Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+  font-family: Arial, "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 /* ---------------------------------- */
 /* Romantic Dinner export theme       */
 /* ---------------------------------- */
 .menu-placeholder.export-canvas.theme-romantic-dinner {
-  padding: 118px 112px;
+  padding: 112px 112px;
   text-align: center;
-  box-shadow: none;
+  box-shadow:
+    inset 0 0 0 18px var(--menu-background),
+    inset 0 0 0 19px rgb(189 111 126 / 30%);
 }
 
 .export-canvas.theme-romantic-dinner .menu-label {
-  margin-bottom: 30px;
-  font-size: 15px;
-  letter-spacing: 0.22em;
+  margin-bottom: 32px;
+  font-size: 16px;
+  letter-spacing: 0.16em;
+}
+
+.export-canvas.theme-romantic-dinner .menu-label::before {
+  margin-right: 13px;
+}
+
+.export-canvas.theme-romantic-dinner .menu-label::after {
+  margin-left: 13px;
 }
 
 .export-canvas.theme-romantic-dinner .preview-content h2 {
@@ -1476,12 +1600,13 @@ h1 {
   max-width: none;
   margin-inline: auto;
   color: var(--menu-primary-text);
-  font-family: "Parisienne", "Songti SC", "Noto Serif SC", "Segoe Script", cursive;
-  font-size: 72px;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.1;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 74px;
+  font-style: italic;
+  font-synthesis: none;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
   white-space: normal;
   text-wrap: balance;
   overflow-wrap: anywhere;
@@ -1494,11 +1619,12 @@ h1 {
   margin-top: 24px;
   margin-inline: auto;
   color: var(--menu-secondary-text);
-  font-family: "Cormorant Garamond", "Songti SC", "Noto Serif SC", Georgia, serif;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
   font-size: 31px;
   font-style: normal;
+  font-synthesis: none;
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   line-height: 1.5;
   opacity: 1;
   visibility: visible;
@@ -1531,21 +1657,22 @@ h1 {
 }
 
 .export-canvas.theme-romantic-dinner .divider {
-  width: 104px;
-  height: 30px;
-  margin: 38px auto 46px;
+  width: 96px;
+  height: 27px;
+  margin: 38px auto 44px;
   background: none;
 }
 
 .export-canvas.theme-romantic-dinner .romantic-signature {
-  width: 102px;
-  height: 30px;
+  width: 94px;
+  height: 27px;
+  opacity: 0.48;
 }
 
 .export-canvas.theme-romantic-dinner .menu-courses {
   max-width: 680px;
   margin-inline: auto;
-  gap: 50px;
+  gap: 48px;
 }
 
 .export-canvas.theme-romantic-dinner .course-dishes {
@@ -1553,27 +1680,36 @@ h1 {
 }
 
 .export-canvas.theme-romantic-dinner .menu-course {
-  text-align: left;
+  text-align: center;
 }
 
 .export-canvas.theme-romantic-dinner .course-label {
-  margin-bottom: 14px;
+  gap: 18px;
+  margin-bottom: 17px;
   color: var(--menu-accent);
-  font-family: Arial, "Songti SC", "Noto Serif SC", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 20px;
+  font-style: italic;
+  font-synthesis: none;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   line-height: 1.4;
-  opacity: 0.82;
+  opacity: 0.92;
+}
+
+.export-canvas.theme-romantic-dinner .course-label::before,
+.export-canvas.theme-romantic-dinner .course-label::after {
+  width: 52px;
 }
 
 .export-canvas.theme-romantic-dinner .course-name {
   max-width: 660px;
-  margin: 0 0 0 20px;
+  margin: 0 auto;
   color: var(--menu-primary-text);
-  font-family: "Cormorant Garamond", "Songti SC", "Noto Serif SC", Georgia, serif;
-  font-size: 32px;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 34px;
   font-style: normal;
+  font-synthesis: none;
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1.35;
@@ -1581,14 +1717,15 @@ h1 {
 
 .export-canvas.theme-romantic-dinner .course-description {
   max-width: 620px;
-  margin: 6px 0 0 20px;
+  margin: 8px auto 0;
   color: var(--menu-secondary-text);
-  font-family: Arial, "Songti SC", "Noto Serif SC", sans-serif;
-  font-size: 18px;
-  font-style: normal;
+  font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  font-size: 20px;
+  font-style: italic;
+  font-synthesis: none;
   font-weight: 400;
-  letter-spacing: 0.015em;
-  line-height: 1.65;
+  letter-spacing: 0.01em;
+  line-height: 1.55;
 }
 
 @media (min-width: 601px) and (max-width: 900px) {

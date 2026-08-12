@@ -6,10 +6,9 @@
 
 2026-08-11
 
-### 当前版本
+## Current Version
 
-My Chef’s Menu v0.3
-Development in Progress
+My Chef’s Menu v0.4 — Visual Redesign Completed
 
 ## v0.3 Multi Dish Support
 
@@ -978,3 +977,323 @@ My Chef’s Menu v0.3.0 已完成 Multi Dish Support、容量规则、Validation
 - UX/UI 持续优化。
 
 以上内容属于未来规划，不影响当前 v0.3 Release。
+
+## v0.4 Visual Redesign
+
+本阶段目标：将现有三个 Theme 从功能型菜单模板升级为更接近真实餐厅菜单的视觉系统。
+
+设计原则：
+
+- 不改变已有功能。
+- 不改变数据结构。
+- 不改变 Multi Dish 支持。
+- 不改变 PNG Export。
+- 以 1080×1350 Export Canvas 作为最终视觉基准。
+- Designed Capacity 固定为 1 / 2 / 4 / 6 Dish。
+- 不通过缩小字体或压缩留白支持更多 Dish。
+
+### Phase 1: Design System Definition
+
+Status: Completed
+
+已完成：
+
+- 确认三个 Theme 的视觉方向。
+- 建立 Theme color token。
+- 建立 typography mapping。
+- 确认中文字体优化方向。
+- 确认 Screen / Export 双层 CSS 策略。
+
+### Phase 2: Classic Fine Dining Theme
+
+Status: Completed
+
+视觉方向：
+
+- 暖黑背景。
+- 香槟金 accent。
+- 高对比 Serif typography。
+- 中央轴线布局。
+- Fine dining tasting menu 风格。
+
+实现：
+
+- Theme CSS redesign completed。
+- Menu title hierarchy optimized。
+- Category divider redesign。
+- Dish name / description hierarchy improved。
+- Export layout adjusted。
+
+验证：
+
+- 1 Dish：Pass。
+- 2 Dish：Pass。
+- 4 Dish：Pass。
+- 6 Dish：Pass。
+
+### Phase 3: Modern Theme
+
+Status: Completed
+
+视觉方向：
+
+- Contemporary European / Parisian editorial style。
+- 暖白纸张背景。
+- 左对齐布局。
+- 赤陶色 Category accent。
+- Minimal botanical decoration。
+
+实现：
+
+- Modern Theme CSS redesign completed。
+- Menu card background hierarchy improved。
+- Editorial spacing optimized。
+- Category indicator redesigned。
+- Dish separator and typography refined。
+
+验证：
+
+- 已完成视觉验收。
+- Modern 与 Classic 保持明显差异。
+- 多 Dish 阅读体验符合设计目标。
+
+### Current v0.4 Status
+
+Completed:
+
+- Classic Fine Dining Theme redesign。
+- Modern Theme redesign。
+
+Pending:
+
+- Romantic Dinner Theme redesign。
+- Full regression testing：
+  - English menu；
+  - Chinese menu；
+  - Mixed language menu；
+  - 1 / 2 / 4 / 6 Dish；
+  - PNG export；
+  - Mobile Safari。
+
+### Next Step
+
+Continue Romantic Dinner Theme redesign.
+
+重点：
+
+- 保持高级晚餐氛围。
+- 避免变成婚礼邀请风格。
+- 使用 Serif + subtle romantic accent。
+- 保持 6 Dish capacity。
+
+# v0.4 Visual Redesign & Typography System
+
+本阶段目标：将 My Chef’s Menu 从功能型菜单生成工具升级为具有完整视觉系统和多语言 typography system 的菜单设计产品。
+
+设计原则：
+
+- 不改变已有功能架构。
+- 不修改数据模型。
+- 不修改 Multi Dish 支持。
+- 不修改 PNG Export pipeline。
+- 以 1080×1350 Export Canvas 为最终视觉标准。
+- Designed Capacity 固定为 1 / 2 / 4 / 6 Dish。
+- 不通过缩小字体或压缩留白支持更多内容。
+
+## Phase 1: Theme Visual Redesign
+
+Status: Completed
+
+三个 Theme 的视觉升级均已完成。
+
+### Classic Fine Dining
+
+视觉方向：
+
+- 暖黑背景。
+- 香槟金 accent。
+- Serif typography。
+- Central axis layout。
+- Fine dining tasting menu atmosphere。
+
+完成：
+
+- Theme color system。
+- Typography hierarchy。
+- Category divider design。
+- Menu frame。
+- Dish hierarchy。
+
+验证通过：
+
+- 1 Dish。
+- 2 Dish。
+- 4 Dish。
+- 6 Dish。
+
+### Modern
+
+视觉方向：
+
+- Contemporary European editorial style。
+- Warm paper background。
+- Left aligned layout。
+- Terracotta accent。
+- Minimal botanical decoration。
+
+完成：
+
+- Menu card hierarchy。
+- Editorial spacing。
+- Category indicator。
+- Dish separator。
+- Typography refinement。
+
+验证：
+
+- 已通过视觉验收。
+- 与 Classic Theme 保持明显差异。
+- 多 Dish 场景保持良好阅读性。
+
+### Romantic Dinner
+
+视觉方向：
+
+- Boutique restaurant anniversary dinner。
+- Warm pink ivory background。
+- Wine red typography。
+- Elegant serif typography。
+- Subtle romantic decoration。
+
+完成：
+
+- Romantic color system。
+- Typography refinement。
+- Menu label decoration。
+- Heart accent element。
+
+确认避免：
+
+- Wedding invitation style。
+- Overly cute romantic style。
+
+# Phase 2: Chinese Typography System
+
+Status: Completed
+
+### Problem
+
+初始版本中文字体依赖系统 fallback，导致不同设备显示不一致。
+
+### Solution
+
+建立本地中文字体系统，新增：
+
+- Noto Serif SC。
+- Noto Sans SC。
+
+字体加载方式：
+
+- WOFF2。
+- Unicode-range 分片。
+- 本地加载。
+- 无 runtime Google Fonts / gstatic dependency。
+
+### Final Font Mapping
+
+Classic Fine Dining：
+
+- Menu Title：Noto Serif SC。
+- Menu Label：Noto Sans SC。
+- Category：Noto Sans SC。
+- Dish Name：Noto Serif SC。
+- Description：Noto Serif SC。
+
+Modern：
+
+- All Chinese typography：Noto Sans SC。
+
+Romantic Dinner：
+
+- All Chinese typography：Noto Serif SC。
+
+英文字体保持：
+
+- Classic：Playfair Display / Libre Baskerville。
+- Modern：Playfair Display / Libre Baskerville。
+- Romantic：Cormorant Garamond。
+
+# Phase 3: Typography Evaluation
+
+Status: Completed
+
+新增独立字体评估页面：
+
+- `font-preview.html`。
+- `font-preview.css`。
+- `font-preview.js`。
+
+目的：在正式修改字体前比较不同中文字体方案。
+
+评估候选：
+
+- Noto Serif SC。
+- Noto Sans SC。
+- Source Han Serif SC。
+- Source Han Sans SC。
+- LXGW WenKai。
+
+最终选择优先考虑稳定性、一致性和 Theme 匹配度，未引入额外字体资源。
+
+# Phase 4: Regression Testing
+
+Status: Completed
+
+测试范围：
+
+Desktop：
+
+- Chrome production preview。
+- PNG export。
+
+Mobile：
+
+- iPhone Safari。
+
+测试内容：
+
+- 中文 Menu Title。
+- 中文 Dish Name。
+- 中文 Description。
+- 中英混合内容。
+- Theme switching。
+- PNG generation。
+
+测试通过：
+
+- Three Theme typography loading。
+- Chinese font rendering。
+- PNG export。
+- Mobile Safari workflow。
+
+# Current v0.4 Status
+
+Completed：
+
+- ✓ Classic Fine Dining redesign。
+- ✓ Modern redesign。
+- ✓ Romantic Dinner redesign。
+- ✓ Chinese typography localization。
+- ✓ Cross-device typography validation。
+
+Remaining：
+
+- Final product regression and release preparation。
+
+# Next Step
+
+进入 Final Release Preparation，包括：
+
+- Final regression checklist。
+- Production deployment verification。
+- Portfolio / showcase preparation。
